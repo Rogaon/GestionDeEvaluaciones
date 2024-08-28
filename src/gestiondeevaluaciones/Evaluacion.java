@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gestiondeevaluaciones;
 
 import java.util.ArrayList;
@@ -10,10 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
-/**
- *
- * @author samue
- */
+
 public class Evaluacion {
     private String titulo;
     private List<Pregunta> preguntas;
