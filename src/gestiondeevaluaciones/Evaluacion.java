@@ -8,6 +8,7 @@ package gestiondeevaluaciones;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 
 /**
  *
@@ -24,6 +25,7 @@ public class Evaluacion {
         this.titulo = titulo;
         this.preguntas = new ArrayList<>();
         this.notas = new ArrayList<>();
+        this.comentarios = new HashMap<>();
     }
     
     public void agregarPregunta(Pregunta pregunta){

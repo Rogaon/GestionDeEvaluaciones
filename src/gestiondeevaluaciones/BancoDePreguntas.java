@@ -15,8 +15,17 @@ import java.util.List;
 public class BancoDePreguntas{
     private List<Pregunta> preguntas;
     
+    public BancoDePreguntas(){
+        this.preguntas = new ArrayList<>();
+    }
+    
     public void agregarPregunta(Pregunta pregunta){
         preguntas.add(pregunta);
+    }
+    
+    // Sobrecarga para agregar múltiples preguntas
+    public void agregarPregunta(List<Pregunta> preguntasNuevas){
+        preguntas.addAll(preguntasNuevas);
     }
     
     public List<Pregunta> obtenerPreguntasPorTema(String tema){
