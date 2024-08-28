@@ -9,7 +9,7 @@ package gestiondeevaluaciones;
  *
  * @author samue
  */
-public class Pregunta {
+public class Pregunta{
     private String enunciado;
     private String tema;
     

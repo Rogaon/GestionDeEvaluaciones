@@ -31,13 +31,17 @@ public class Evaluacion {
     }
     
     // Sobrecarga para registrar una nota con comentario
-    public void registrarNota(double nota, String comentario) {
+    public void registrarNota(double nota, String comentario){
         notas.add(nota);
         comentarios.put(nota, comentario);  // Guardar la nota y su comentario asociado
     }
     
     public void registrarNota(double nota){
         notas.add(nota);
+    }
+    
+    public String getTitulo(){
+        return titulo;
     }
     
     public List<Pregunta> getPreguntas(){
@@ -48,22 +52,22 @@ public class Evaluacion {
         return notas;
     }
     
-     public Map<Double, String> getComentarios() {
+     public Map<Double, String> getComentarios(){
         return comentarios;
     }
      
     @Override
     //metodo de sobreescritura para convertir un objeto 
     //Evaluacion en una cadena de texto que resume su contenido de forma legible
-    public String toString() {
+    public String toString(){
         StringBuilder sb = new StringBuilder();
         sb.append("Evaluacion: ").append(titulo).append("\n");
         sb.append("Preguntas:\n");
-        for (Pregunta pregunta : preguntas) {
+        for (Pregunta pregunta : preguntas){
             sb.append("- ").append(pregunta.getEnunciado()).append("\n");
         }
         sb.append("Notas y Comentarios:\n");
-        for (Double nota : notas) {
+        for (Double nota : notas){
             sb.append("- Nota: ").append(nota).append(", Comentario: ").append(comentarios.getOrDefault(nota, "Sin comentario")).append("\n");
         }
         return sb.toString();

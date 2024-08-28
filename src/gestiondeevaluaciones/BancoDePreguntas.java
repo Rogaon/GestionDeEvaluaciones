@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author samue
  */
-public class BancoDePreguntas {
+public class BancoDePreguntas{
     private List<Pregunta> preguntas;
     
     public void agregarPregunta(Pregunta pregunta){

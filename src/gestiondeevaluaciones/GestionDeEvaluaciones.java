@@ -9,7 +9,7 @@ package gestiondeevaluaciones;
  *
  * @author samue
  */
-public class GestionDeEvaluaciones {
+public class GestionDeEvaluaciones{
 
     /**
      * @param args the command line arguments
