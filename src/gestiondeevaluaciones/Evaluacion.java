@@ -11,7 +11,6 @@ public class Evaluacion {
     private List<Pregunta> preguntas;
     private List<Double> notas;
     private Map<Double, String> comentarios;  // Mapa para almacenar los comentarios asociados a las notas
-
     
     public Evaluacion(String titulo){
         this.titulo = titulo;
@@ -20,8 +19,18 @@ public class Evaluacion {
         this.comentarios = new HashMap<>();
     }
     
-    public void agregarPregunta(Pregunta pregunta){
-        preguntas.add(pregunta);
+    public void agregarPregunta( List<Pregunta> preguntasTema){
+        preguntas.addAll(preguntasTema);
+    }
+    
+    public void agregarPregunta(List<Pregunta> preguntasTema, int cont){
+        if(cont>preguntas.size()){
+            System.out.println("La cantidad solicitada suprea la cantidad de preguntas disponibles.");
+            return;
+        }
+        for(int i=0;i<cont;i++){
+            preguntas.add(preguntasTema.get(i));
+        }
     }
     
     // Sobrecarga para registrar una nota con comentario

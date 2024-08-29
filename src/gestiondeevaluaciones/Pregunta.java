@@ -33,4 +33,6 @@ public class Pregunta{
     public void setTema(){
         this.tema = tema;
     }
+
+   
 }
