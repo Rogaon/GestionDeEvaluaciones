@@ -34,6 +34,15 @@ public class SistemaGestion {
         return null;
     }
 
+    public boolean eliminarEvaluacion(String titulo) {
+        Evaluacion evaluacion = obtenerEvaluacionPorTitulo(titulo);
+        if (evaluacion != null) {
+            evaluaciones.remove(evaluacion);
+            return true;
+        }
+        return false;
+    }
+        
     public void agregarPreguntaAlBanco(Pregunta pregunta) {
         bancoDePreguntas.agregarPregunta(pregunta);
     }
@@ -44,5 +53,16 @@ public class SistemaGestion {
 
     public List<String> obtenerTemas() {
         return bancoDePreguntas.obtenerTemas();
+    }
+    
+    public boolean eliminarPregunta(String enunciado, String tema) {
+        List<Pregunta> preguntas = bancoDePreguntas.obtenerPreguntasPorTema(tema);
+        for (Pregunta pregunta : preguntas) {
+            if (pregunta.getEnunciado().equalsIgnoreCase(enunciado)) {
+                preguntas.remove(pregunta);
+                return true;
+            }
+        }
+        return false;
     }
 }

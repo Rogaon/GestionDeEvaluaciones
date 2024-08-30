@@ -47,6 +47,19 @@ public class Evaluacion {
         notas.add(nota);
         comentarios.put(nota, comentario);
     }
+    
+    public boolean modificarNota(double notaAntigua, double notaNueva, String nuevoComentario) {
+        int index = notas.indexOf(notaAntigua);
+        if (index != -1) {
+            notas.set(index, notaNueva);
+            if (nuevoComentario != null) {
+                comentarios.remove(notaAntigua);
+                comentarios.put(notaNueva, nuevoComentario);
+            }
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public String toString() {

@@ -16,14 +16,17 @@ public class Menu {
     public static void main(String[] args) {
         SistemaGestion sistema = new SistemaGestion();
         Scanner scanner = new Scanner(System.in);
-        
+
         while (true) {
             System.out.println("1. Crear evaluación");
             System.out.println("2. Agregar pregunta al banco");
             System.out.println("3. Agregar preguntas a una evaluación");
             System.out.println("4. Registrar nota");
             System.out.println("5. Mostrar evaluación");
-            System.out.println("6. Salir");
+            System.out.println("6. Eliminar evaluación");
+            System.out.println("7. Eliminar pregunta");
+            System.out.println("8. Modificar nota");
+            System.out.println("9. Salir");
             int opcion = scanner.nextInt();
             scanner.nextLine(); // Consumir la nueva línea
 
@@ -91,6 +94,47 @@ public class Menu {
                     }
                     break;
                 case 6:
+                    System.out.print("Ingrese el título de la evaluación a eliminar: ");
+                    String tituloEliminar = scanner.nextLine();
+                    if (sistema.eliminarEvaluacion(tituloEliminar)) {
+                        System.out.println("Evaluación eliminada exitosamente.");
+                    } else {
+                        System.out.println("Evaluación no encontrada.");
+                    }
+                    break;
+                case 7:
+                    System.out.print("Ingrese el tema de la pregunta a eliminar: ");
+                    String temaEliminar = scanner.nextLine();
+                    System.out.print("Ingrese el enunciado de la pregunta a eliminar: ");
+                    String enunciadoEliminar = scanner.nextLine();
+                    if (sistema.eliminarPregunta(enunciadoEliminar, temaEliminar)) {
+                        System.out.println("Pregunta eliminada exitosamente.");
+                    } else {
+                        System.out.println("Pregunta no encontrada.");
+                    }
+                    break;
+                case 8:
+                    System.out.print("Ingrese el título de la evaluación: ");
+                    String tituloModNota = scanner.nextLine();
+                    Evaluacion evalModNota = sistema.obtenerEvaluacionPorTitulo(tituloModNota);
+                    if (evalModNota == null) {
+                        System.out.println("Evaluación no encontrada.");
+                        break;
+                    }
+                    System.out.print("Ingrese la nota a modificar: ");
+                    double notaAntigua = scanner.nextDouble();
+                    System.out.print("Ingrese la nueva nota: ");
+                    double notaNueva = scanner.nextDouble();
+                    scanner.nextLine(); // Consumir la nueva línea
+                    System.out.print("Ingrese el nuevo comentario (dejar en blanco si no desea modificarlo): ");
+                    String nuevoComentario = scanner.nextLine();
+                    if (evalModNota.modificarNota(notaAntigua, notaNueva, nuevoComentario.isEmpty() ? null : nuevoComentario)) {
+                        System.out.println("Nota modificada exitosamente.");
+                    } else {
+                        System.out.println("No se encontró la nota especificada.");
+                    }
+                    break;
+                case 9:
                     System.out.println("Saliendo del sistema...");
                     return;
                 default:
