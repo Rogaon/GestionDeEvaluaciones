@@ -36,8 +36,7 @@ public class Evaluacion {
     }
 
     public void registrarNota(double nota) {
-        // Añadimos una entrada con comentario vacío
-        notasComentarios.add(new NotaComentario(nota, ""));
+        notasComentarios.add(new NotaComentario(nota, null));
     }
 
     public void registrarNota(double nota, String comentario) {
@@ -67,8 +66,34 @@ public class Evaluacion {
         }
         sb.append("Notas y Comentarios:\n");
         for (NotaComentario nc : notasComentarios) {
-            sb.append("- Nota: ").append(nc.getNota()).append(", Comentario: ").append(nc.getComentario()).append("\n");
+            sb.append("- Nota: ").append(nc.getNota()).append(", Comentario: ").append(nc.getComentario() != null ? nc.getComentario() : "Sin comentario").append("\n");
         }
         return sb.toString();
+    }
+
+    private class NotaComentario {
+        private double nota;
+        private String comentario;
+
+        public NotaComentario(double nota, String comentario) {
+            this.nota = nota;
+            this.comentario = comentario;
+        }
+
+        public double getNota() {
+            return nota;
+        }
+
+        public void setNota(double nota) {
+            this.nota = nota;
+        }
+
+        public String getComentario() {
+            return comentario;
+        }
+
+        public void setComentario(String comentario) {
+            this.comentario = comentario;
+        }
     }
 }

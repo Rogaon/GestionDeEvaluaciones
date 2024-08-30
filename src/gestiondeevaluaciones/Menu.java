@@ -25,8 +25,8 @@ public class Menu {
             System.out.println("5. Mostrar evaluación");
             System.out.println("6. Eliminar evaluación");
             System.out.println("7. Eliminar pregunta");
-            System.out.println("8. Modificar nota");
-            System.out.println("9. Salir");
+            System.out.println("9. Mostrar preguntas por tema"); 
+            System.out.println("10. Salir");
             int opcion = scanner.nextInt();
             scanner.nextLine(); // Consumir la nueva línea
 
@@ -56,6 +56,7 @@ public class Menu {
                     List<Pregunta> preguntas = sistema.obtenerPreguntasPorTema(temaPreguntas);
                     System.out.print("Ingrese la cantidad de preguntas a agregar (0 para todas): ");
                     int cantidad = scanner.nextInt();
+                    scanner.nextLine(); // Consumir la nueva línea
                     if (cantidad == 0) {
                         evaluacion.agregarPreguntas(preguntas);
                     } else {
@@ -73,9 +74,15 @@ public class Menu {
                     System.out.print("Ingrese la nota: ");
                     double nota = scanner.nextDouble();
                     scanner.nextLine(); // Consumir la nueva línea
-                    System.out.print("Ingrese el comentario: ");
-                    String comentario = scanner.nextLine();
-                    evalNota.registrarNota(nota, comentario);
+                    System.out.print("¿Desea agregar un comentario? (s/n): ");
+                    String respuesta = scanner.nextLine();
+                    if (respuesta.equalsIgnoreCase("s")) {
+                        System.out.print("Ingrese el comentario: ");
+                        String comentario = scanner.nextLine();
+                        evalNota.registrarNota(nota, comentario);
+                    } else {
+                        evalNota.registrarNota(nota);
+                    }
                     break;
                 case 5:
                     System.out.print("Ingrese el título de la evaluación: ");
@@ -117,7 +124,6 @@ public class Menu {
                     }
                     System.out.print("Ingrese la nota a modificar: ");
                     double notaAntigua = scanner.nextDouble();
-                    scanner.nextLine(); // Consumir la nueva línea
                     System.out.print("Ingrese la nueva nota: ");
                     double notaNueva = scanner.nextDouble();
                     scanner.nextLine(); // Consumir la nueva línea
@@ -130,11 +136,24 @@ public class Menu {
                     }
                     break;
                 case 9:
-                    System.out.println("Saliendo del sistema...");
+                    System.out.print("Ingrese el tema para mostrar las preguntas: ");
+                    String temaMostrar = scanner.nextLine();
+                    List<Pregunta> preguntasTema = sistema.obtenerPreguntasPorTema(temaMostrar);
+                    if (preguntasTema.isEmpty()) {
+                        System.out.println("No hay preguntas para el tema especificado.");
+                    } else {
+                        System.out.println("Preguntas del tema \"" + temaMostrar + "\":");
+                        for (Pregunta pregunta : preguntasTema) {
+                            System.out.println("- " + pregunta.getEnunciado());
+                        }
+                    }
+                    break;
+                case 10:
+                    System.out.println("Saliendo del programa.");
+                    scanner.close();
                     return;
                 default:
-                    System.out.println("Opción no válida.");
-                    break;
+                    System.out.println("Opción inválida. Por favor, intente de nuevo.");
             }
         }
     }

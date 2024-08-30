@@ -19,6 +19,10 @@ public class SistemaGestion {
     public SistemaGestion() {
         this.evaluaciones = new ArrayList<>();
         this.bancoDePreguntas = new BancoDePreguntas();
+        
+        // Datos iniciales
+        crearEvaluacion("Evaluacion 1");
+        crearEvaluacion("Evaluacion 2");
     }
 
     public void crearEvaluacion(String titulo) {

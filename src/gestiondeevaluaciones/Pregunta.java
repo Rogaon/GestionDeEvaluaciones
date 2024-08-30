@@ -9,30 +9,28 @@ package gestiondeevaluaciones;
  *
  * @author samue
  */
-public class Pregunta{
+public class Pregunta {
     private String enunciado;
     private String tema;
     
-    public Pregunta(String enunciado, String tema){
-    this.enunciado = enunciado;
-    this.tema = tema;
+    public Pregunta(String enunciado, String tema) {
+        this.enunciado = enunciado;
+        this.tema = tema;
     }
     
-    public String getEnunciado(){
+    public String getEnunciado() {
         return enunciado;
     }
     
-    public void setEnunciado(){
+    public void setEnunciado(String enunciado) {
         this.enunciado = enunciado;
     }
     
-    public String getTema(){
+    public String getTema() {
         return tema;
     }
     
-    public void setTema(){
+    public void setTema(String tema) {
         this.tema = tema;
     }
-
-   
 }

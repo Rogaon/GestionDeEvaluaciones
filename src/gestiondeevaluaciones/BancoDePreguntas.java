@@ -19,9 +19,14 @@ public class BancoDePreguntas {
 
     public BancoDePreguntas() {
         preguntasPorTema = new HashMap<>();
+        
+        // Datos iniciales
+        agregarPregunta(new Pregunta("¿Qué es la programación orientada a objetos?", "Programación"));
+        agregarPregunta(new Pregunta("¿Qué es una clase en Java?", "Programación"));
+        agregarPregunta(new Pregunta("¿Qué es una base de datos relacional?", "Bases de Datos"));
+        agregarPregunta(new Pregunta("¿Qué es un SQL JOIN?", "Bases de Datos"));
     }
 
-    // Método para agregar una pregunta a un tema específico
     public void agregarPregunta(Pregunta pregunta) {
         String tema = pregunta.getTema();
         preguntasPorTema.computeIfAbsent(tema, k -> new ArrayList<>()).add(pregunta);
