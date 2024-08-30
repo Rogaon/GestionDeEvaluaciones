@@ -12,35 +12,37 @@ import java.util.List;
  *
  * @author samue
  */
-public class SistemaGestion{
-    private BancoDePreguntas bancoDePreguntas;
+public class SistemaGestion {
     private List<Evaluacion> evaluaciones;
+    private BancoDePreguntas bancoDePreguntas;
 
-    public SistemaGestion(){
-        this.bancoDePreguntas = new BancoDePreguntas();
+    public SistemaGestion() {
         this.evaluaciones = new ArrayList<>();
+        this.bancoDePreguntas = new BancoDePreguntas();
     }
 
-    public BancoDePreguntas getBancoDePreguntas(){
-        return bancoDePreguntas;
+    public void crearEvaluacion(String titulo) {
+        evaluaciones.add(new Evaluacion(titulo));
     }
 
-    public void agregarEvaluacion(Evaluacion evaluacion){
-        evaluaciones.add(evaluacion);
-    }
-
-    public Evaluacion obtenerEvaluacion(String titulo){
-        for (Evaluacion evaluacion : evaluaciones){
-            if (evaluacion.getTitulo().equalsIgnoreCase(titulo)){
+    public Evaluacion obtenerEvaluacionPorTitulo(String titulo) {
+        for (Evaluacion evaluacion : evaluaciones) {
+            if (evaluacion.getTitulo().equalsIgnoreCase(titulo)) {
                 return evaluacion;
             }
         }
         return null;
     }
 
-    public void mostrarEvaluaciones(){
-        for (Evaluacion evaluacion : evaluaciones) {
-            System.out.println(evaluacion);
-        }
-    }    
+    public void agregarPreguntaAlBanco(Pregunta pregunta) {
+        bancoDePreguntas.agregarPregunta(pregunta);
+    }
+
+    public List<Pregunta> obtenerPreguntasPorTema(String tema) {
+        return bancoDePreguntas.obtenerPreguntasPorTema(tema);
+    }
+
+    public List<String> obtenerTemas() {
+        return bancoDePreguntas.obtenerTemas();
+    }
 }

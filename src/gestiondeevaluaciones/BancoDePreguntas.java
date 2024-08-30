@@ -6,39 +6,34 @@
 package gestiondeevaluaciones;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
  * @author samue
  */
-public class BancoDePreguntas{
-    private List<Pregunta> preguntas;
-    
-    public BancoDePreguntas(){
-        this.preguntas = new ArrayList<>();
+public class BancoDePreguntas {
+    private Map<String, List<Pregunta>> preguntasPorTema;
+
+    public BancoDePreguntas() {
+        preguntasPorTema = new HashMap<>();
     }
-    
-    public void agregarPregunta(Pregunta pregunta){
-        preguntas.add(pregunta);
-    }
-    
-    // Sobrecarga para agregar múltiples preguntas
-    public void agregarPregunta(List<Pregunta> preguntasNuevas){
-        preguntas.addAll(preguntasNuevas);
-    }
-    
-    public List<Pregunta> obtenerPreguntasPorTema(String tema){
-        List<Pregunta> preguntasPorTema = new ArrayList<>();
-        for(Pregunta pregunta : preguntas){
-            if(pregunta.getTema().equalsIgnoreCase(tema)){
-                preguntasPorTema.add(pregunta);
-            }
+
+    public void agregarPregunta(Pregunta pregunta) {
+        String tema = pregunta.getTema();
+        if (!preguntasPorTema.containsKey(tema)) {
+            preguntasPorTema.put(tema, new ArrayList<>());
         }
-        return preguntasPorTema;
+        preguntasPorTema.get(tema).add(pregunta);
     }
-    
-    public List<Pregunta> getPreguntas(){
-        return preguntas;
+
+    public List<Pregunta> obtenerPreguntasPorTema(String tema) {
+        return preguntasPorTema.getOrDefault(tema, new ArrayList<>());
+    }
+
+    public List<String> obtenerTemas() {
+        return new ArrayList<>(preguntasPorTema.keySet());
     }
 }
