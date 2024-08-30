@@ -73,15 +73,9 @@ public class Menu {
                     System.out.print("Ingrese la nota: ");
                     double nota = scanner.nextDouble();
                     scanner.nextLine(); // Consumir la nueva línea
-                    System.out.print("¿Desea agregar un comentario? (s/n): ");
-                    String respuesta = scanner.nextLine();
-                    if (respuesta.equalsIgnoreCase("s")) {
-                        System.out.print("Ingrese el comentario: ");
-                        String comentario = scanner.nextLine();
-                        evalNota.registrarNota(nota, comentario);
-                    } else {
-                        evalNota.registrarNota(nota);
-                    }
+                    System.out.print("Ingrese el comentario: ");
+                    String comentario = scanner.nextLine();
+                    evalNota.registrarNota(nota, comentario);
                     break;
                 case 5:
                     System.out.print("Ingrese el título de la evaluación: ");
@@ -123,6 +117,7 @@ public class Menu {
                     }
                     System.out.print("Ingrese la nota a modificar: ");
                     double notaAntigua = scanner.nextDouble();
+                    scanner.nextLine(); // Consumir la nueva línea
                     System.out.print("Ingrese la nueva nota: ");
                     double notaNueva = scanner.nextDouble();
                     scanner.nextLine(); // Consumir la nueva línea

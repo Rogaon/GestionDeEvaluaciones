@@ -21,12 +21,24 @@ public class BancoDePreguntas {
         preguntasPorTema = new HashMap<>();
     }
 
+    // Método para agregar una pregunta a un tema específico
     public void agregarPregunta(Pregunta pregunta) {
         String tema = pregunta.getTema();
-        if (!preguntasPorTema.containsKey(tema)) {
-            preguntasPorTema.put(tema, new ArrayList<>());
+        preguntasPorTema.computeIfAbsent(tema, k -> new ArrayList<>()).add(pregunta);
+    }
+
+    // Sobrecarga 1: Agregar una lista de preguntas a un tema específico
+    public void agregarPreguntas(String tema, List<Pregunta> preguntas) {
+        preguntasPorTema.computeIfAbsent(tema, k -> new ArrayList<>()).addAll(preguntas);
+    }
+
+    // Sobrecarga 2: Agregar preguntas con una cantidad específica a un tema
+    public void agregarPreguntas(String tema, List<Pregunta> preguntas, int cantidad) {
+        List<Pregunta> listaTema = preguntasPorTema.computeIfAbsent(tema, k -> new ArrayList<>());
+        int limit = Math.min(cantidad, preguntas.size());
+        for (int i = 0; i < limit; i++) {
+            listaTema.add(preguntas.get(i));
         }
-        preguntasPorTema.get(tema).add(pregunta);
     }
 
     public List<Pregunta> obtenerPreguntasPorTema(String tema) {

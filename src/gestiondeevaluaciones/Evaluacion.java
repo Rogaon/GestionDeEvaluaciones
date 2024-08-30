@@ -2,20 +2,16 @@ package gestiondeevaluaciones;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
 
 public class Evaluacion {
     private String titulo;
     private List<Pregunta> preguntas;
-    private List<Double> notas;
-    private Map<Double, String> comentarios;
+    private List<NotaComentario> notasComentarios;
 
     public Evaluacion(String titulo) {
         this.titulo = titulo;
         this.preguntas = new ArrayList<>();
-        this.notas = new ArrayList<>();
-        this.comentarios = new HashMap<>();
+        this.notasComentarios = new ArrayList<>();
     }
 
     public String getTitulo() {
@@ -40,23 +36,23 @@ public class Evaluacion {
     }
 
     public void registrarNota(double nota) {
-        notas.add(nota);
+        // Añadimos una entrada con comentario vacío
+        notasComentarios.add(new NotaComentario(nota, ""));
     }
 
     public void registrarNota(double nota, String comentario) {
-        notas.add(nota);
-        comentarios.put(nota, comentario);
+        notasComentarios.add(new NotaComentario(nota, comentario));
     }
     
     public boolean modificarNota(double notaAntigua, double notaNueva, String nuevoComentario) {
-        int index = notas.indexOf(notaAntigua);
-        if (index != -1) {
-            notas.set(index, notaNueva);
-            if (nuevoComentario != null) {
-                comentarios.remove(notaAntigua);
-                comentarios.put(notaNueva, nuevoComentario);
+        for (NotaComentario nc : notasComentarios) {
+            if (nc.getNota() == notaAntigua) {
+                nc.setNota(notaNueva);
+                if (nuevoComentario != null) {
+                    nc.setComentario(nuevoComentario);
+                }
+                return true;
             }
-            return true;
         }
         return false;
     }
@@ -70,8 +66,8 @@ public class Evaluacion {
             sb.append("- ").append(pregunta.getEnunciado()).append("\n");
         }
         sb.append("Notas y Comentarios:\n");
-        for (Double nota : notas) {
-            sb.append("- Nota: ").append(nota).append(", Comentario: ").append(comentarios.getOrDefault(nota, "Sin comentario")).append("\n");
+        for (NotaComentario nc : notasComentarios) {
+            sb.append("- Nota: ").append(nc.getNota()).append(", Comentario: ").append(nc.getComentario()).append("\n");
         }
         return sb.toString();
     }
