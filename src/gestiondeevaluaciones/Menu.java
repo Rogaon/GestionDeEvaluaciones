@@ -7,10 +7,6 @@ package gestiondeevaluaciones;
 
 import java.util.Scanner;
 
-/**
- *
- * @author samue
- */
 public class Menu {
     public static void main(String[] args) {
         SistemaGestion sistema = new SistemaGestion();

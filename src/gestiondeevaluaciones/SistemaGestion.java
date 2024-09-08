@@ -5,20 +5,17 @@
  */
 package gestiondeevaluaciones;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
-/**
- *
- * @author samue
- */
 public class SistemaGestion {
-    private List<Evaluacion> evaluaciones;
+    private Map<String, Evaluacion> evaluaciones;  // Usar Map en lugar de List
     private BancoDePreguntas bancoDePreguntas;
 
     public SistemaGestion() {
-        this.evaluaciones = new ArrayList<>();
+        this.evaluaciones = new HashMap<>();
         this.bancoDePreguntas = new BancoDePreguntas();
         
         // Datos iniciales
@@ -27,27 +24,17 @@ public class SistemaGestion {
     }
 
     public void crearEvaluacion(String titulo) {
-        evaluaciones.add(new Evaluacion(titulo));
+        evaluaciones.put(titulo, new Evaluacion(titulo));
     }
 
     public Evaluacion obtenerEvaluacionPorTitulo(String titulo) {
-        for (Evaluacion evaluacion : evaluaciones) {
-            if (evaluacion.getTitulo().equalsIgnoreCase(titulo)) {
-                return evaluacion;
-            }
-        }
-        return null;
+        return evaluaciones.get(titulo);
     }
 
     public boolean eliminarEvaluacion(String titulo) {
-        Evaluacion evaluacion = obtenerEvaluacionPorTitulo(titulo);
-        if (evaluacion != null) {
-            evaluaciones.remove(evaluacion);
-            return true;
-        }
-        return false;
+        return evaluaciones.remove(titulo) != null;
     }
-        
+
     public void agregarPreguntaAlBanco(Pregunta pregunta) {
         bancoDePreguntas.agregarPregunta(pregunta);
     }
@@ -59,18 +46,11 @@ public class SistemaGestion {
     public List<String> obtenerTemas() {
         return bancoDePreguntas.obtenerTemas();
     }
-    
+
     public boolean eliminarPregunta(String enunciado, String tema) {
-        List<Pregunta> preguntas = bancoDePreguntas.obtenerPreguntasPorTema(tema);
-        for (Pregunta pregunta : preguntas) {
-            if (pregunta.getEnunciado().equalsIgnoreCase(enunciado)) {
-                preguntas.remove(pregunta);
-                return true;
-            }
-        }
-        return false;
+        return bancoDePreguntas.eliminarPregunta(enunciado, tema);
     }
-    
+
     public void mostrarOpcionesMenu(Scanner scanner) {
         System.out.println("1. Crear evaluación");
         System.out.println("2. Agregar pregunta al banco");
@@ -158,10 +138,10 @@ public class SistemaGestion {
                 }
                 break;
             case 7:
-                System.out.print("Ingrese el tema de la pregunta a eliminar: ");
-                String temaEliminar = scanner.nextLine();
                 System.out.print("Ingrese el enunciado de la pregunta a eliminar: ");
                 String enunciadoEliminar = scanner.nextLine();
+                System.out.print("Ingrese el tema de la pregunta: ");
+                String temaEliminar = scanner.nextLine();
                 if (eliminarPregunta(enunciadoEliminar, temaEliminar)) {
                     System.out.println("Pregunta eliminada exitosamente.");
                 } else {
@@ -170,27 +150,28 @@ public class SistemaGestion {
                 break;
             case 8:
                 System.out.print("Ingrese el título de la evaluación: ");
-                String tituloModNota = scanner.nextLine();
-                Evaluacion evalModNota = obtenerEvaluacionPorTitulo(tituloModNota);
-                if (evalModNota == null) {
+                String tituloEvalModificar = scanner.nextLine();
+                Evaluacion evalModificar = obtenerEvaluacionPorTitulo(tituloEvalModificar);
+                if (evalModificar == null) {
                     System.out.println("Evaluación no encontrada.");
                     break;
                 }
-                System.out.print("Ingrese la nota a modificar: ");
+                System.out.print("Ingrese la nota antigua: ");
                 double notaAntigua = scanner.nextDouble();
+                scanner.nextLine(); // Consumir la nueva línea
                 System.out.print("Ingrese la nueva nota: ");
                 double notaNueva = scanner.nextDouble();
                 scanner.nextLine(); // Consumir la nueva línea
-                System.out.print("Ingrese el nuevo comentario (dejar en blanco si no desea modificarlo): ");
+                System.out.print("Ingrese el nuevo comentario (puede dejar en blanco): ");
                 String nuevoComentario = scanner.nextLine();
-                if (evalModNota.modificarNota(notaAntigua, notaNueva, nuevoComentario.isEmpty() ? null : nuevoComentario)) {
+                if (evalModificar.modificarNota(notaAntigua, notaNueva, nuevoComentario)) {
                     System.out.println("Nota modificada exitosamente.");
                 } else {
-                    System.out.println("No se encontró la nota especificada.");
+                    System.out.println("Nota no encontrada.");
                 }
                 break;
             case 9:
-                System.out.println("Saliendo del sistema...");
+                System.out.println("Saliendo...");
                 System.exit(0);
                 break;
             default:

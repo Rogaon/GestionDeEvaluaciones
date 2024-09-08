@@ -1,18 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gestiondeevaluaciones;
 
-/**
- *
- * @author samue
- */
 public class NotaComentario {
     private double nota;
     private String comentario;
-    
+
     public NotaComentario(double nota, String comentario) {
         this.nota = nota;
         this.comentario = comentario;
@@ -33,4 +24,10 @@ public class NotaComentario {
     public void setComentario(String comentario) {
         this.comentario = comentario;
     }
+
+    @Override
+    public String toString() {
+        return "Nota: " + nota + ", Comentario: " + (comentario != null ? comentario : "Sin comentario");
+    }
 }
+

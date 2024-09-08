@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gestiondeevaluaciones;
 
 import java.util.ArrayList;
@@ -10,39 +5,30 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- *
- * @author samue
- */
 public class BancoDePreguntas {
     private Map<String, List<Pregunta>> preguntasPorTema;
 
     public BancoDePreguntas() {
-        preguntasPorTema = new HashMap<>();
-        
-        // Datos iniciales
-        agregarPregunta(new Pregunta("¿Qué es la programación orientada a objetos?", "Programación"));
-        agregarPregunta(new Pregunta("¿Qué es una clase en Java?", "Programación"));
-        agregarPregunta(new Pregunta("¿Qué es una base de datos relacional?", "Bases de Datos"));
-        agregarPregunta(new Pregunta("¿Qué es un SQL JOIN?", "Bases de Datos"));
+        this.preguntasPorTema = new HashMap<>();
     }
 
     public void agregarPregunta(Pregunta pregunta) {
-        String tema = pregunta.getTema();
-        preguntasPorTema.computeIfAbsent(tema, k -> new ArrayList<>()).add(pregunta);
+        preguntasPorTema.computeIfAbsent(pregunta.getTema(), k -> new ArrayList<>()).add(pregunta);
     }
 
-    // Sobrecarga 1: Agregar una lista de preguntas a un tema específico
     public void agregarPreguntas(String tema, List<Pregunta> preguntas) {
         preguntasPorTema.computeIfAbsent(tema, k -> new ArrayList<>()).addAll(preguntas);
     }
 
-    // Sobrecarga 2: Agregar preguntas con una cantidad específica a un tema
     public void agregarPreguntas(String tema, List<Pregunta> preguntas, int cantidad) {
-        List<Pregunta> listaTema = preguntasPorTema.computeIfAbsent(tema, k -> new ArrayList<>());
-        int limit = Math.min(cantidad, preguntas.size());
-        for (int i = 0; i < limit; i++) {
-            listaTema.add(preguntas.get(i));
+        if (cantidad > preguntas.size()) {
+            System.out.println("La cantidad solicitada supera el número de preguntas disponibles.");
+            return;
+        }
+
+        List<Pregunta> preguntasDelTema = preguntasPorTema.computeIfAbsent(tema, k -> new ArrayList<>());
+        for (int i = 0; i < cantidad; i++) {
+            preguntasDelTema.add(preguntas.get(i));
         }
     }
 
@@ -52,5 +38,13 @@ public class BancoDePreguntas {
 
     public List<String> obtenerTemas() {
         return new ArrayList<>(preguntasPorTema.keySet());
+    }
+
+    public boolean eliminarPregunta(String enunciado, String tema) {
+        List<Pregunta> preguntas = preguntasPorTema.get(tema);
+        if (preguntas != null) {
+            return preguntas.removeIf(p -> p.getEnunciado().equals(enunciado));
+        }
+        return false;
     }
 }
