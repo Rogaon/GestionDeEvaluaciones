@@ -24,4 +24,9 @@ public class Pregunta {
     public void setTema(String tema) {
         this.tema = tema;
     }
+
+    @Override
+    public String toString() {
+        return "Pregunta: " + enunciado + ", Tema: " + tema;
+    }
 }

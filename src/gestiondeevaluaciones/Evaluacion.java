@@ -4,96 +4,57 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Evaluacion {
-    private String titulo;
+    private String nombre;
     private List<Pregunta> preguntas;
-    private List<NotaComentario> notasComentarios;
+    private List<Double> notas;
 
-    public Evaluacion(String titulo) {
-        this.titulo = titulo;
+    public Evaluacion(String nombre) {
+        this.nombre = nombre;
         this.preguntas = new ArrayList<>();
-        this.notasComentarios = new ArrayList<>();
+        this.notas = new ArrayList<>();
     }
 
-    public String getTitulo() {
-        return titulo;
+    public String getNombre() {
+        return nombre;
     }
 
-    // Método sobrecargado 1: Agregar todas las preguntas de un tema a la evaluación
-    public void agregarPreguntas(List<Pregunta> preguntasDelTema) {
-        preguntas.addAll(preguntasDelTema);
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
-    // Método sobrecargado 2: Agregar una cantidad específica de preguntas del tema a la evaluación
-    public void agregarPreguntas(List<Pregunta> preguntasDelTema, int cantidad) {
-        if (cantidad > preguntasDelTema.size()) {
-            System.out.println("La cantidad solicitada supera el número de preguntas disponibles.");
-            return;
+    public List<Pregunta> getPreguntas() {
+        return preguntas;
+    }
+
+    public void setPreguntas(List<Pregunta> preguntas) {
+        this.preguntas = preguntas;
+    }
+
+    public List<Double> getNotas() {
+        return notas;
+    }
+
+    public void setNotas(List<Double> notas) {
+        this.notas = notas;
+    }
+
+    public void agregarNota(double nota) throws NotaInvalidaException {
+        if (nota < 1.0 || nota > 7.0) {
+            throw new NotaInvalidaException("Nota inválida: " + nota + ". Debe estar entre 1.0 y 7.0.");
         }
-
-        for (int i = 0; i < cantidad; i++) {
-            preguntas.add(preguntasDelTema.get(i));
-        }
+        notas.add(nota);
     }
 
-    public void registrarNota(double nota) {
-        notasComentarios.add(new NotaComentario(nota, null));
+    public void eliminarPregunta(String enunciado) {
+        preguntas.removeIf(pregunta -> pregunta.getEnunciado().equalsIgnoreCase(enunciado));
     }
 
-    public void registrarNota(double nota, String comentario) {
-        notasComentarios.add(new NotaComentario(nota, comentario));
-    }
-    
-    public boolean modificarNota(double notaAntigua, double notaNueva, String nuevoComentario) {
-        for (NotaComentario nc : notasComentarios) {
-            if (nc.getNota() == notaAntigua) {
-                nc.setNota(notaNueva);
-                if (nuevoComentario != null) {
-                    nc.setComentario(nuevoComentario);
-                }
-                return true;
-            }
-        }
-        return false;
+    public void modificarEvaluacion(String nuevoNombre) {
+        this.nombre = nuevoNombre;
     }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Evaluacion: ").append(titulo).append("\n");
-        sb.append("Preguntas:\n");
-        for (Pregunta pregunta : preguntas) {
-            sb.append("- ").append(pregunta.getEnunciado()).append("\n");
-        }
-        sb.append("Notas y Comentarios:\n");
-        for (NotaComentario nc : notasComentarios) {
-            sb.append("- Nota: ").append(nc.getNota()).append(", Comentario: ").append(nc.getComentario() != null ? nc.getComentario() : "Sin comentario").append("\n");
-        }
-        return sb.toString();
-    }
-
-    private class NotaComentario {
-        private double nota;
-        private String comentario;
-
-        public NotaComentario(double nota, String comentario) {
-            this.nota = nota;
-            this.comentario = comentario;
-        }
-
-        public double getNota() {
-            return nota;
-        }
-
-        public void setNota(double nota) {
-            this.nota = nota;
-        }
-
-        public String getComentario() {
-            return comentario;
-        }
-
-        public void setComentario(String comentario) {
-            this.comentario = comentario;
-        }
+        return "Evaluación: " + nombre + ", Preguntas = " + preguntas + ", Notas = " + notas;
     }
 }
