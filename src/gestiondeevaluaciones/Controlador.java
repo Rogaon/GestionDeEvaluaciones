@@ -227,6 +227,38 @@ public class Controlador {
         }
     }
 
+     // método para eliminar una pregunta
+    public void eliminarPregunta() {
+        String enunciado = JOptionPane.showInputDialog("Ingrese el enunciado de la pregunta a eliminar:");
+        if (enunciado == null || enunciado.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Enunciado inválido.");
+            return;
+        }
+        try {
+            bancoPreguntas.eliminarPregunta(enunciado);
+            JOptionPane.showMessageDialog(null, "Pregunta eliminada exitosamente.");
+        } catch (PreguntaNoEncontradaException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }
+
+    //  método para eliminar una evaluación
+    public void eliminarEvaluacion() {
+        String nombreEvaluacion = JOptionPane.showInputDialog("Ingrese el nombre de la evaluación a eliminar:");
+        if (nombreEvaluacion == null || nombreEvaluacion.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Nombre de evaluación inválido.");
+            return;
+        }
+        Evaluacion evaluacion = buscarEvaluacion(nombreEvaluacion);
+        if (evaluacion != null) {
+            evaluaciones.remove(evaluacion);
+            JOptionPane.showMessageDialog(null, "Evaluación eliminada exitosamente.");
+        } else {
+            JOptionPane.showMessageDialog(null, "Evaluación no encontrada.");
+        }
+    }
+
+    
     private Evaluacion buscarEvaluacion(String nombre) {
         for (Evaluacion e : evaluaciones) {
             if (e.getNombre().equalsIgnoreCase(nombre)) {

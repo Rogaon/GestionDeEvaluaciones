@@ -13,38 +13,47 @@ public class SistemaGestionEvaluaciones extends JFrame {
 
     private void inicializarInterfazGrafica() {
         setTitle("Sistema de Gestión de Evaluaciones");
-        setSize(700, 600);
+        setSize(700, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // Establecer un esquema de color sobrio
-        Color fondoColor = new Color(240, 240, 240); // Color de fondo gris claro
-        Color botonColor = new Color(70, 130, 180);  // Color de los botones azul acero
+        // Esquema de colores
+        Color fondoColor = new Color(240, 240, 240);
+        Color botonColor = new Color(70, 130, 180);
         Color textoBotonColor = Color.WHITE;
+        Color tituloFondoColor = new Color(173, 216, 230);
 
-        // Panel principal con margen y fondo
+        // Panel principal
         JPanel panelPrincipal = new JPanel(new BorderLayout());
         panelPrincipal.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         panelPrincipal.setBackground(fondoColor);
 
-        // Etiqueta de título
+        // Panel del título
+        JPanel panelTitulo = new JPanel();
+        panelTitulo.setBackground(tituloFondoColor);
+        panelTitulo.setBorder(BorderFactory.createEmptyBorder(10, 0, 20, 0));
+
         JLabel tituloLabel = new JLabel("Sistema de Gestión de Evaluaciones", JLabel.CENTER);
         tituloLabel.setFont(new Font("Arial", Font.BOLD, 24));
-        tituloLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 20, 0));
-        panelPrincipal.add(tituloLabel, BorderLayout.NORTH);
+        tituloLabel.setForeground(Color.BLACK);
 
-        // Panel central para los botones con GridBagLayout
+        panelTitulo.add(tituloLabel);
+        panelPrincipal.add(panelTitulo, BorderLayout.NORTH);
+
+        // Panel central con botones
         JPanel panelCentral = new JPanel(new GridBagLayout());
         panelCentral.setBackground(fondoColor);
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.fill = GridBagConstraints.BOTH;
 
-        // Botones con estilo coherente
+        // Creación de botones
         JButton btnAgregarEvaluacion = crearBoton("Agregar Evaluación", botonColor, textoBotonColor);
         JButton btnMostrarEvaluaciones = crearBoton("Mostrar Evaluaciones", botonColor, textoBotonColor);
+        JButton btnEliminarEvaluacion = crearBoton("Eliminar Evaluación", botonColor, textoBotonColor);
         JButton btnAgregarPreguntaBanco = crearBoton("Agregar Preguntas al Banco", botonColor, textoBotonColor);
         JButton btnMostrarPreguntas = crearBoton("Mostrar Preguntas", botonColor, textoBotonColor);
+        JButton btnEliminarPregunta = crearBoton("Eliminar Pregunta", botonColor, textoBotonColor);
         JButton btnAgregarPreguntasEvaluacion = crearBoton("Agregar Preguntas a Evaluación", botonColor, textoBotonColor);
         JButton btnRegistrarNota = crearBoton("Registrar Nota a Evaluación", botonColor, textoBotonColor);
         JButton btnGuardarEvaluaciones = crearBoton("Guardar Evaluaciones en CSV", botonColor, textoBotonColor);
@@ -53,7 +62,7 @@ public class SistemaGestionEvaluaciones extends JFrame {
         JButton btnCargarPreguntas = crearBoton("Cargar Preguntas desde CSV", botonColor, textoBotonColor);
         JButton btnSalir = crearBoton("Salir", new Color(220, 53, 69), textoBotonColor);
 
-        // Añadir botones al panel central en orden coherente
+        // Añadir botones al panel central
         gbc.gridx = 0; gbc.gridy = 0;
         panelCentral.add(btnAgregarEvaluacion, gbc);
 
@@ -61,40 +70,48 @@ public class SistemaGestionEvaluaciones extends JFrame {
         panelCentral.add(btnMostrarEvaluaciones, gbc);
 
         gbc.gridx = 0; gbc.gridy = 1;
-        panelCentral.add(btnAgregarPreguntaBanco, gbc);
+        panelCentral.add(btnEliminarEvaluacion, gbc);
 
         gbc.gridx = 1; gbc.gridy = 1;
-        panelCentral.add(btnMostrarPreguntas, gbc);
-
-        gbc.gridx = 0; gbc.gridy = 2;
-        panelCentral.add(btnAgregarPreguntasEvaluacion, gbc);
-
-        gbc.gridx = 1; gbc.gridy = 2;
         panelCentral.add(btnRegistrarNota, gbc);
 
+        gbc.gridx = 0; gbc.gridy = 2;
+        panelCentral.add(btnAgregarPreguntaBanco, gbc);
+
+        gbc.gridx = 1; gbc.gridy = 2;
+        panelCentral.add(btnMostrarPreguntas, gbc);
+
         gbc.gridx = 0; gbc.gridy = 3;
-        panelCentral.add(btnGuardarEvaluaciones, gbc);
+        panelCentral.add(btnEliminarPregunta, gbc);
 
         gbc.gridx = 1; gbc.gridy = 3;
-        panelCentral.add(btnCargarEvaluaciones, gbc);
+        panelCentral.add(btnAgregarPreguntasEvaluacion, gbc);
 
         gbc.gridx = 0; gbc.gridy = 4;
-        panelCentral.add(btnGuardarPreguntas, gbc);
+        panelCentral.add(btnGuardarEvaluaciones, gbc);
 
         gbc.gridx = 1; gbc.gridy = 4;
+        panelCentral.add(btnCargarEvaluaciones, gbc);
+
+        gbc.gridx = 0; gbc.gridy = 5;
+        panelCentral.add(btnGuardarPreguntas, gbc);
+
+        gbc.gridx = 1; gbc.gridy = 5;
         panelCentral.add(btnCargarPreguntas, gbc);
 
-        gbc.gridx = 0; gbc.gridy = 5; gbc.gridwidth = 2;
+        gbc.gridx = 0; gbc.gridy = 6; gbc.gridwidth = 2;
         panelCentral.add(btnSalir, gbc);
 
         panelPrincipal.add(panelCentral, BorderLayout.CENTER);
         add(panelPrincipal);
 
-        // Asignar acciones a los botones: la interfaz solo llama a métodos del controlador
+        // Asignar acciones a los botones
         btnAgregarEvaluacion.addActionListener(e -> controlador.agregarEvaluacion());
         btnMostrarEvaluaciones.addActionListener(e -> controlador.mostrarEvaluaciones());
+        btnEliminarEvaluacion.addActionListener(e -> controlador.eliminarEvaluacion());
         btnAgregarPreguntaBanco.addActionListener(e -> controlador.agregarPreguntasAlBanco());
         btnMostrarPreguntas.addActionListener(e -> controlador.mostrarPreguntas());
+        btnEliminarPregunta.addActionListener(e -> controlador.eliminarPregunta());
         btnAgregarPreguntasEvaluacion.addActionListener(e -> controlador.agregarPreguntasAEvaluacion());
         btnRegistrarNota.addActionListener(e -> controlador.registrarNotaAEvaluacion());
         btnGuardarEvaluaciones.addActionListener(e -> controlador.guardarEvaluacionesEnCSV());
