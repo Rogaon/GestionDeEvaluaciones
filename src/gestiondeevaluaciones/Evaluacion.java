@@ -22,8 +22,14 @@ public class Evaluacion {
         return preguntas;
     }
 
+    // Método original para agregar una lista de preguntas
     public void agregarPreguntas(List<Pregunta> nuevasPreguntas) {
         this.preguntas.addAll(nuevasPreguntas);
+    }
+
+    // Sobrecarga del método para agregar una sola pregunta
+    public void agregarPreguntas(Pregunta pregunta) {
+        this.preguntas.add(pregunta);
     }
 
     public void registrarNota(double nota) throws NotaInvalidaException {

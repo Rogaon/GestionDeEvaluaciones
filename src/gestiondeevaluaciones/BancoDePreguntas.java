@@ -12,8 +12,16 @@ public class BancoDePreguntas {
         preguntasPorTema = new HashMap<>();
     }
 
+    // Método original para agregar una pregunta
     public void agregarPregunta(Pregunta pregunta) {
         preguntasPorTema.computeIfAbsent(pregunta.getTema(), k -> new ArrayList<>()).add(pregunta);
+    }
+
+    // Sobrecarga del método para agregar una lista de preguntas
+    public void agregarPregunta(List<Pregunta> preguntas) {
+        for (Pregunta pregunta : preguntas) {
+            agregarPregunta(pregunta);
+        }
     }
 
     public List<Pregunta> obtenerPreguntasPorTema(String tema) throws PreguntaNoEncontradaException {
