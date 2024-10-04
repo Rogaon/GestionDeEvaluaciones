@@ -12,6 +12,35 @@ public class Controlador {
     public Controlador() {
         evaluaciones = new ArrayList<>();
         bancoPreguntas = new BancoDePreguntas();
+
+        // Datos iniciales para el banco de preguntas
+        bancoPreguntas.agregarPregunta(new Pregunta("¿Cuál es la capital de Francia?", "Geografía"));
+        bancoPreguntas.agregarPregunta(new Pregunta("¿Cuál es el resultado de 2+2?", "Matemáticas"));
+        bancoPreguntas.agregarPregunta(new Pregunta("¿Quién escribió 'Cien Años de Soledad'?", "Literatura"));
+
+        // Datos iniciales para evaluaciones
+        Evaluacion evalGeografia = new Evaluacion("Evaluación de Geografía");
+        Evaluacion evalMatematicas = new Evaluacion("Evaluación de Matemáticas");
+
+        try {
+            evalGeografia.agregarPreguntas(bancoPreguntas.obtenerPreguntasPorTema("Geografía"));
+            evalMatematicas.agregarPreguntas(bancoPreguntas.obtenerPreguntasPorTema("Matemáticas"));
+        } catch (PreguntaNoEncontradaException e) {
+            // Manejo de excepciones
+        }
+
+        evaluaciones.add(evalGeografia);
+        evaluaciones.add(evalMatematicas);
+
+        // Cargar datos al iniciar
+        cargarEvaluacionesDesdeCSV();
+        cargarPreguntasDesdeCSV();
+
+        // Guardar datos al salir
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            guardarEvaluacionesEnCSV();
+            guardarPreguntasEnCSV();
+        }));
     }
 
     public void agregarEvaluacion() {
