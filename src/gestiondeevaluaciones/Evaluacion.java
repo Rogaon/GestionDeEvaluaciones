@@ -3,6 +3,9 @@ package gestiondeevaluaciones;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Clase que representa una evaluación.
+ */
 public class Evaluacion {
     private String nombre;
     private List<Pregunta> preguntas;

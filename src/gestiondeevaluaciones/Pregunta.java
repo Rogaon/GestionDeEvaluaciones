@@ -1,5 +1,8 @@
 package gestiondeevaluaciones;
 
+/**
+ * Clase que representa una pregunta general.
+ */
 public class Pregunta {
     private String enunciado;
     private String tema;

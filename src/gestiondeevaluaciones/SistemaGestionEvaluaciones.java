@@ -3,6 +3,9 @@ package gestiondeevaluaciones;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Clase principal que maneja la interfaz gráfica de la aplicación.
+ */
 public class SistemaGestionEvaluaciones extends JFrame {
     private Controlador controlador;
 
@@ -13,7 +16,7 @@ public class SistemaGestionEvaluaciones extends JFrame {
 
     private void inicializarInterfazGrafica() {
         setTitle("Sistema de Gestión de Evaluaciones");
-        setSize(700, 700);
+        setSize(700, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -51,16 +54,15 @@ public class SistemaGestionEvaluaciones extends JFrame {
         JButton btnAgregarEvaluacion = crearBoton("Agregar Evaluación", botonColor, textoBotonColor);
         JButton btnMostrarEvaluaciones = crearBoton("Mostrar Evaluaciones", botonColor, textoBotonColor);
         JButton btnEliminarEvaluacion = crearBoton("Eliminar Evaluación", botonColor, textoBotonColor);
+        JButton btnRegistrarNota = crearBoton("Registrar Nota a Evaluación", botonColor, textoBotonColor);
         JButton btnAgregarPreguntaBanco = crearBoton("Agregar Preguntas al Banco", botonColor, textoBotonColor);
         JButton btnMostrarPreguntas = crearBoton("Mostrar Preguntas", botonColor, textoBotonColor);
         JButton btnEliminarPregunta = crearBoton("Eliminar Pregunta", botonColor, textoBotonColor);
-        JButton btnAgregarPreguntasEvaluacion = crearBoton("Agregar Preguntas a Evaluación", botonColor, textoBotonColor);
-        JButton btnRegistrarNota = crearBoton("Registrar Nota a Evaluación", botonColor, textoBotonColor);
-        JButton btnGuardarEvaluaciones = crearBoton("Guardar Evaluaciones en CSV", botonColor, textoBotonColor);
-        JButton btnCargarEvaluaciones = crearBoton("Cargar Evaluaciones desde CSV", botonColor, textoBotonColor);
-        JButton btnGuardarPreguntas = crearBoton("Guardar Preguntas en CSV", botonColor, textoBotonColor);
-        JButton btnCargarPreguntas = crearBoton("Cargar Preguntas desde CSV", botonColor, textoBotonColor);
         JButton btnModificarPregunta = crearBoton("Modificar Pregunta", botonColor, textoBotonColor);
+        JButton btnAgregarPreguntasEvaluacion = crearBoton("Agregar Preguntas a Evaluación", botonColor, textoBotonColor);
+        JButton btnMostrarEvaluacionesPorNota = crearBoton("Mostrar Evaluaciones por Nota", botonColor, textoBotonColor);
+        JButton btnMostrarPreguntasPorTema = crearBoton("Mostrar Preguntas por Tema", botonColor, textoBotonColor);
+        JButton btnGenerarReporte = crearBoton("Generar Reporte", botonColor, textoBotonColor);
         JButton btnSalir = crearBoton("Salir", new Color(220, 53, 69), textoBotonColor);
 
         // Añadir botones al panel central
@@ -81,32 +83,26 @@ public class SistemaGestionEvaluaciones extends JFrame {
 
         gbc.gridx = 1; gbc.gridy = 2;
         panelCentral.add(btnMostrarPreguntas, gbc);
-        
+
         gbc.gridx = 0; gbc.gridy = 3;
-        panelCentral.add(btnModificarPregunta, gbc);
+        panelCentral.add(btnEliminarPregunta, gbc);
 
         gbc.gridx = 1; gbc.gridy = 3;
-        panelCentral.add(btnEliminarPregunta, gbc);
+        panelCentral.add(btnModificarPregunta, gbc);
 
         gbc.gridx = 0; gbc.gridy = 4;
-        panelCentral.add(btnEliminarPregunta, gbc);
-
-        gbc.gridx = 1; gbc.gridy = 4;
         panelCentral.add(btnAgregarPreguntasEvaluacion, gbc);
 
+        gbc.gridx = 1; gbc.gridy = 4;
+        panelCentral.add(btnMostrarEvaluacionesPorNota, gbc);
+
         gbc.gridx = 0; gbc.gridy = 5;
-        panelCentral.add(btnGuardarEvaluaciones, gbc);
+        panelCentral.add(btnMostrarPreguntasPorTema, gbc);
 
         gbc.gridx = 1; gbc.gridy = 5;
-        panelCentral.add(btnCargarEvaluaciones, gbc);
+        panelCentral.add(btnGenerarReporte, gbc);
 
-        gbc.gridx = 0; gbc.gridy = 6;
-        panelCentral.add(btnGuardarPreguntas, gbc);
-
-        gbc.gridx = 1; gbc.gridy = 6;
-        panelCentral.add(btnCargarPreguntas, gbc);
-
-        gbc.gridx = 0; gbc.gridy = 7; gbc.gridwidth = 2;
+        gbc.gridx = 0; gbc.gridy = 6; gbc.gridwidth = 2;
         panelCentral.add(btnSalir, gbc);
 
         panelPrincipal.add(panelCentral, BorderLayout.CENTER);
@@ -116,22 +112,21 @@ public class SistemaGestionEvaluaciones extends JFrame {
         btnAgregarEvaluacion.addActionListener(e -> controlador.agregarEvaluacion());
         btnMostrarEvaluaciones.addActionListener(e -> controlador.mostrarEvaluaciones());
         btnEliminarEvaluacion.addActionListener(e -> controlador.eliminarEvaluacion());
+        btnRegistrarNota.addActionListener(e -> controlador.registrarNotaAEvaluacion());
         btnAgregarPreguntaBanco.addActionListener(e -> controlador.agregarPreguntasAlBanco());
         btnMostrarPreguntas.addActionListener(e -> controlador.mostrarPreguntas());
-        btnModificarPregunta.addActionListener(e -> controlador.modificarPregunta());
         btnEliminarPregunta.addActionListener(e -> controlador.eliminarPregunta());
+        btnModificarPregunta.addActionListener(e -> controlador.modificarPregunta());
         btnAgregarPreguntasEvaluacion.addActionListener(e -> controlador.agregarPreguntasAEvaluacion());
-        btnRegistrarNota.addActionListener(e -> controlador.registrarNotaAEvaluacion());
-        btnGuardarEvaluaciones.addActionListener(e -> controlador.guardarEvaluacionesEnCSV());
-        btnCargarEvaluaciones.addActionListener(e -> controlador.cargarEvaluacionesDesdeCSV());
-        btnGuardarPreguntas.addActionListener(e -> controlador.guardarPreguntasEnCSV());
-        btnCargarPreguntas.addActionListener(e -> controlador.cargarPreguntasDesdeCSV());
+        btnMostrarEvaluacionesPorNota.addActionListener(e -> controlador.mostrarEvaluacionesPorNota());
+        btnMostrarPreguntasPorTema.addActionListener(e -> controlador.mostrarPreguntasPorTema());
+        btnGenerarReporte.addActionListener(e -> controlador.generarReporte());
         btnSalir.addActionListener(e -> System.exit(0));
 
         setVisible(true);
     }
 
-    // Método auxiliar para crear botones con estilo
+    // Método para crear botones con estilo
     private JButton crearBoton(String texto, Color fondo, Color textoColor) {
         JButton boton = new JButton(texto);
         boton.setBackground(fondo);
@@ -145,7 +140,3 @@ public class SistemaGestionEvaluaciones extends JFrame {
         new SistemaGestionEvaluaciones();
     }
 }
-
-
-
-

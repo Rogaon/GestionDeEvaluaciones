@@ -2,6 +2,9 @@ package gestiondeevaluaciones;
 
 import java.util.List;
 
+/**
+ * Clase que representa una pregunta de opción múltiple, heredando de Pregunta.
+ */
 public class PreguntaMultipleChoice extends Pregunta {
     private List<String> opciones;
     private String respuestaCorrecta;
@@ -20,7 +23,7 @@ public class PreguntaMultipleChoice extends Pregunta {
         return respuestaCorrecta;
     }
 
-    // Sobreescritura del método toString
+    // Sobreescritura del método toString para incluir las opciones
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder(super.toString());
@@ -31,3 +34,4 @@ public class PreguntaMultipleChoice extends Pregunta {
         return sb.toString();
     }
 }
+

@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Clase que representa el banco de preguntas.
+ */
 public class BancoDePreguntas {
     private Map<String, List<Pregunta>> preguntasPorTema;
 
@@ -51,7 +54,7 @@ public class BancoDePreguntas {
             throw new PreguntaNoEncontradaException("Pregunta no encontrada: " + enunciado);
         }
     }
-    
+
     public Pregunta buscarPregunta(String enunciado) throws PreguntaNoEncontradaException {
         for (List<Pregunta> preguntas : preguntasPorTema.values()) {
             for (Pregunta p : preguntas) {
