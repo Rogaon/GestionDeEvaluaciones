@@ -1,6 +1,7 @@
 package gestiondeevaluaciones;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,15 +13,27 @@ public class SistemaGestionEvaluaciones extends JFrame {
         bancoPreguntas = new BancoDePreguntas();
         evaluaciones = new ArrayList<>();
 
+        // Configurar la ventana principal
         setTitle("Sistema de Gestión de Evaluaciones");
-        setSize(600, 400);
+        setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+        setLayout(new BorderLayout());
 
-        JPanel panel = new JPanel();
+        // Panel superior con el título
+        JLabel tituloLabel = new JLabel("Sistema de Gestión de Evaluaciones", JLabel.CENTER);
+        tituloLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        tituloLabel.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));
+        add(tituloLabel, BorderLayout.NORTH);
+
+        // Crear el panel principal con un GridBagLayout para organizar los botones
+        JPanel panelCentral = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
 
         // Botones
-        JButton btnAgregarPreguntas = new JButton("Agregar Preguntas");
+        JButton btnAgregarPreguntas = new JButton("Agregar Preguntas al Banco");
         JButton btnMostrarPreguntas = new JButton("Mostrar Preguntas por Tema");
         JButton btnAgregarEvaluacion = new JButton("Agregar Evaluación");
         JButton btnEliminarPregunta = new JButton("Eliminar Pregunta");
@@ -29,19 +42,56 @@ public class SistemaGestionEvaluaciones extends JFrame {
         JButton btnModificarEvaluacion = new JButton("Modificar Evaluación");
         JButton btnAgregarNota = new JButton("Agregar Nota a Evaluación");
         JButton btnMostrarPreguntaEspecifica = new JButton("Mostrar Pregunta Específica");
+        JButton btnMostrarEvaluaciones = new JButton("Mostrar Todas las Evaluaciones");
+        JButton btnMostrarEvaluacionEspecifica = new JButton("Mostrar Evaluación Específica");
+        JButton btnMostrarTodasPreguntas = new JButton("Mostrar Todas las Preguntas");
 
-        // Añadir botones al panel
-        panel.add(btnAgregarPreguntas);
-        panel.add(btnMostrarPreguntas);
-        panel.add(btnAgregarEvaluacion);
-        panel.add(btnEliminarPregunta);
-        panel.add(btnEliminarEvaluacion);
-        panel.add(btnModificarPregunta);
-        panel.add(btnModificarEvaluacion);
-        panel.add(btnAgregarNota);
-        panel.add(btnMostrarPreguntaEspecifica);
+        // Añadir los botones con coordenadas en el GridBagLayout
+        gbc.gridx = 0; gbc.gridy = 0;
+        panelCentral.add(btnAgregarPreguntas, gbc);
 
-        // Acciones de los botones
+        gbc.gridx = 1; gbc.gridy = 0;
+        panelCentral.add(btnMostrarPreguntas, gbc);
+
+        gbc.gridx = 0; gbc.gridy = 1;
+        panelCentral.add(btnAgregarEvaluacion, gbc);
+
+        gbc.gridx = 1; gbc.gridy = 1;
+        panelCentral.add(btnEliminarPregunta, gbc);
+
+        gbc.gridx = 0; gbc.gridy = 2;
+        panelCentral.add(btnEliminarEvaluacion, gbc);
+
+        gbc.gridx = 1; gbc.gridy = 2;
+        panelCentral.add(btnModificarPregunta, gbc);
+
+        gbc.gridx = 0; gbc.gridy = 3;
+        panelCentral.add(btnModificarEvaluacion, gbc);
+
+        gbc.gridx = 1; gbc.gridy = 3;
+        panelCentral.add(btnAgregarNota, gbc);
+
+        gbc.gridx = 0; gbc.gridy = 4;
+        panelCentral.add(btnMostrarPreguntaEspecifica, gbc);
+
+        gbc.gridx = 1; gbc.gridy = 4;
+        panelCentral.add(btnMostrarEvaluaciones, gbc);
+
+        gbc.gridx = 0; gbc.gridy = 5;
+        panelCentral.add(btnMostrarEvaluacionEspecifica, gbc);
+
+        gbc.gridx = 1; gbc.gridy = 5;
+        panelCentral.add(btnMostrarTodasPreguntas, gbc);
+
+        add(panelCentral, BorderLayout.CENTER);
+
+        // Panel inferior con botones de acción
+        JPanel panelInferior = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JButton btnSalir = new JButton("Salir");
+        panelInferior.add(btnSalir);
+        add(panelInferior, BorderLayout.SOUTH);
+
+        // Configurar las acciones de los botones
         btnAgregarPreguntas.addActionListener(e -> bancoPreguntas.agregarPreguntas());
 
         btnMostrarPreguntas.addActionListener(e -> {
@@ -53,19 +103,19 @@ public class SistemaGestionEvaluaciones extends JFrame {
             String nombreEvaluacion = JOptionPane.showInputDialog("Ingrese el nombre de la evaluación:");
             Evaluacion evaluacion = new Evaluacion(nombreEvaluacion);
             evaluaciones.add(evaluacion);
-            System.out.println("Evaluación agregada: " + nombreEvaluacion);
+            JOptionPane.showMessageDialog(null, "Evaluación agregada: " + nombreEvaluacion);
         });
 
         btnEliminarPregunta.addActionListener(e -> {
             String enunciado = JOptionPane.showInputDialog("Ingrese el enunciado de la pregunta a eliminar:");
             bancoPreguntas.eliminarPregunta(enunciado);
-            System.out.println("Pregunta eliminada: " + enunciado);
+            JOptionPane.showMessageDialog(null, "Pregunta eliminada: " + enunciado);
         });
 
         btnEliminarEvaluacion.addActionListener(e -> {
             String nombre = JOptionPane.showInputDialog("Ingrese el nombre de la evaluación a eliminar:");
             evaluaciones.removeIf(evaluacion -> evaluacion.getNombre().equalsIgnoreCase(nombre));
-            System.out.println("Evaluación eliminada: " + nombre);
+            JOptionPane.showMessageDialog(null, "Evaluación eliminada: " + nombre);
         });
 
         btnModificarPregunta.addActionListener(e -> {
@@ -81,9 +131,11 @@ public class SistemaGestionEvaluaciones extends JFrame {
             for (Evaluacion evaluacion : evaluaciones) {
                 if (evaluacion.getNombre().equalsIgnoreCase(nombreOriginal)) {
                     evaluacion.modificarEvaluacion(nuevoNombre);
-                    System.out.println("Evaluación modificada.");
+                    JOptionPane.showMessageDialog(null, "Evaluación modificada.");
+                    return;
                 }
             }
+            JOptionPane.showMessageDialog(null, "Evaluación no encontrada.");
         });
 
         btnAgregarNota.addActionListener(e -> {
@@ -94,17 +146,56 @@ public class SistemaGestionEvaluaciones extends JFrame {
                 for (Evaluacion evaluacion : evaluaciones) {
                     if (evaluacion.getNombre().equalsIgnoreCase(nombreEvaluacion)) {
                         evaluacion.agregarNota(nota);
-                        System.out.println("Nota agregada a la evaluación " + nombreEvaluacion);
+                        JOptionPane.showMessageDialog(null, "Nota agregada a la evaluación " + nombreEvaluacion);
                         return;
                     }
                 }
                 throw new EvaluacionNoEncontradaException("Evaluación no encontrada: " + nombreEvaluacion);
             } catch (NumberFormatException ex) {
-                System.out.println("La nota ingresada no es válida.");
+                JOptionPane.showMessageDialog(null, "La nota ingresada no es válida.");
             } catch (NotaInvalidaException ex) {
-                System.out.println(ex.getMessage());
+                JOptionPane.showMessageDialog(null, ex.getMessage());
             } catch (EvaluacionNoEncontradaException ex) {
-                System.out.println(ex.getMessage());
+                JOptionPane.showMessageDialog(null, ex.getMessage());
+            }
+        });
+
+        // Mostrar todas las evaluaciones
+        btnMostrarEvaluaciones.addActionListener(e -> {
+            if (evaluaciones.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "No hay evaluaciones registradas.");
+            } else {
+                StringBuilder sb = new StringBuilder();
+                for (Evaluacion evaluacion : evaluaciones) {
+                    sb.append(evaluacion.toString()).append("\n");
+                }
+                JOptionPane.showMessageDialog(null, sb.toString(), "Todas las Evaluaciones", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+
+        // Mostrar evaluación específica
+        btnMostrarEvaluacionEspecifica.addActionListener(e -> {
+            String nombre = JOptionPane.showInputDialog("Ingrese el nombre de la evaluación:");
+            for (Evaluacion evaluacion : evaluaciones) {
+                if (evaluacion.getNombre().equalsIgnoreCase(nombre)) {
+                    JOptionPane.showMessageDialog(null, evaluacion.toString(), "Evaluación", JOptionPane.INFORMATION_MESSAGE);
+                    return;
+                }
+            }
+            JOptionPane.showMessageDialog(null, "Evaluación no encontrada.");
+        });
+
+        // Mostrar todas las preguntas
+        btnMostrarTodasPreguntas.addActionListener(e -> {
+            List<Pregunta> preguntas = bancoPreguntas.getPreguntas();
+            if (preguntas.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "No hay preguntas en el banco.");
+            } else {
+                StringBuilder sb = new StringBuilder();
+                for (Pregunta pregunta : preguntas) {
+                    sb.append(pregunta.toString()).append("\n");
+                }
+                JOptionPane.showMessageDialog(null, sb.toString(), "Todas las Preguntas", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
@@ -113,11 +204,12 @@ public class SistemaGestionEvaluaciones extends JFrame {
             try {
                 bancoPreguntas.mostrarPreguntaEspecifica(enunciado);
             } catch (PreguntaNoEncontradaException ex) {
-                System.out.println(ex.getMessage());
+                JOptionPane.showMessageDialog(null, ex.getMessage());
             }
         });
 
-        add(panel);
+        btnSalir.addActionListener(e -> System.exit(0));
+
         setVisible(true);
     }
 
