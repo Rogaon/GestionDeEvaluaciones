@@ -296,5 +296,30 @@ public class Controlador {
         }
         return null;
     }
+    
+    public void modificarPregunta() {
+        String enunciado = JOptionPane.showInputDialog("Ingrese el enunciado de la pregunta a modificar:");
+        if (enunciado == null || enunciado.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Enunciado inválido.");
+            return;
+        }
+        try {
+            Pregunta pregunta = bancoPreguntas.buscarPregunta(enunciado);
+            String nuevoEnunciado = JOptionPane.showInputDialog("Ingrese el nuevo enunciado (deje en blanco para mantener):");
+            String nuevoTema = JOptionPane.showInputDialog("Ingrese el nuevo tema (deje en blanco para mantener):");
+            if (nuevoEnunciado != null && !nuevoEnunciado.trim().isEmpty()) {
+                pregunta.setEnunciado(nuevoEnunciado);
+            }
+            if (nuevoTema != null && !nuevoTema.trim().isEmpty()) {
+                String temaAnterior = pregunta.getTema();
+                pregunta.setTema(nuevoTema);
+                bancoPreguntas.actualizarTemaPregunta(pregunta, temaAnterior);
+            }
+            JOptionPane.showMessageDialog(null, "Pregunta modificada exitosamente.");
+        } catch (PreguntaNoEncontradaException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }   
+
 }
 

@@ -51,4 +51,22 @@ public class BancoDePreguntas {
             throw new PreguntaNoEncontradaException("Pregunta no encontrada: " + enunciado);
         }
     }
+    
+    public Pregunta buscarPregunta(String enunciado) throws PreguntaNoEncontradaException {
+        for (List<Pregunta> preguntas : preguntasPorTema.values()) {
+            for (Pregunta p : preguntas) {
+                if (p.getEnunciado().equalsIgnoreCase(enunciado)) {
+                    return p;
+                }
+            }
+        }
+        throw new PreguntaNoEncontradaException("Pregunta no encontrada: " + enunciado);
+    }
+
+    public void actualizarTemaPregunta(Pregunta pregunta, String temaAnterior) {
+        if (!temaAnterior.equals(pregunta.getTema())) {
+            preguntasPorTema.get(temaAnterior).remove(pregunta);
+            agregarPregunta(pregunta);
+        }
+    }
 }

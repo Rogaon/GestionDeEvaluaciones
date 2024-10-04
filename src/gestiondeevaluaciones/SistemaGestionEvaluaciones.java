@@ -60,6 +60,7 @@ public class SistemaGestionEvaluaciones extends JFrame {
         JButton btnCargarEvaluaciones = crearBoton("Cargar Evaluaciones desde CSV", botonColor, textoBotonColor);
         JButton btnGuardarPreguntas = crearBoton("Guardar Preguntas en CSV", botonColor, textoBotonColor);
         JButton btnCargarPreguntas = crearBoton("Cargar Preguntas desde CSV", botonColor, textoBotonColor);
+        JButton btnModificarPregunta = crearBoton("Modificar Pregunta", botonColor, textoBotonColor);
         JButton btnSalir = crearBoton("Salir", new Color(220, 53, 69), textoBotonColor);
 
         // Añadir botones al panel central
@@ -80,26 +81,32 @@ public class SistemaGestionEvaluaciones extends JFrame {
 
         gbc.gridx = 1; gbc.gridy = 2;
         panelCentral.add(btnMostrarPreguntas, gbc);
-
+        
         gbc.gridx = 0; gbc.gridy = 3;
-        panelCentral.add(btnEliminarPregunta, gbc);
+        panelCentral.add(btnModificarPregunta, gbc);
 
         gbc.gridx = 1; gbc.gridy = 3;
-        panelCentral.add(btnAgregarPreguntasEvaluacion, gbc);
+        panelCentral.add(btnEliminarPregunta, gbc);
 
         gbc.gridx = 0; gbc.gridy = 4;
-        panelCentral.add(btnGuardarEvaluaciones, gbc);
+        panelCentral.add(btnEliminarPregunta, gbc);
 
         gbc.gridx = 1; gbc.gridy = 4;
-        panelCentral.add(btnCargarEvaluaciones, gbc);
+        panelCentral.add(btnAgregarPreguntasEvaluacion, gbc);
 
         gbc.gridx = 0; gbc.gridy = 5;
-        panelCentral.add(btnGuardarPreguntas, gbc);
+        panelCentral.add(btnGuardarEvaluaciones, gbc);
 
         gbc.gridx = 1; gbc.gridy = 5;
+        panelCentral.add(btnCargarEvaluaciones, gbc);
+
+        gbc.gridx = 0; gbc.gridy = 6;
+        panelCentral.add(btnGuardarPreguntas, gbc);
+
+        gbc.gridx = 1; gbc.gridy = 6;
         panelCentral.add(btnCargarPreguntas, gbc);
 
-        gbc.gridx = 0; gbc.gridy = 6; gbc.gridwidth = 2;
+        gbc.gridx = 0; gbc.gridy = 7; gbc.gridwidth = 2;
         panelCentral.add(btnSalir, gbc);
 
         panelPrincipal.add(panelCentral, BorderLayout.CENTER);
@@ -111,6 +118,7 @@ public class SistemaGestionEvaluaciones extends JFrame {
         btnEliminarEvaluacion.addActionListener(e -> controlador.eliminarEvaluacion());
         btnAgregarPreguntaBanco.addActionListener(e -> controlador.agregarPreguntasAlBanco());
         btnMostrarPreguntas.addActionListener(e -> controlador.mostrarPreguntas());
+        btnModificarPregunta.addActionListener(e -> controlador.modificarPregunta());
         btnEliminarPregunta.addActionListener(e -> controlador.eliminarPregunta());
         btnAgregarPreguntasEvaluacion.addActionListener(e -> controlador.agregarPreguntasAEvaluacion());
         btnRegistrarNota.addActionListener(e -> controlador.registrarNotaAEvaluacion());
