@@ -5,3 +5,4 @@ public class NotaInvalidaException extends Exception {
         super(mensaje);
     }
 }
+

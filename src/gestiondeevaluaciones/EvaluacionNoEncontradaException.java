@@ -5,3 +5,4 @@ public class EvaluacionNoEncontradaException extends Exception {
         super(mensaje);
     }
 }
+

@@ -2,218 +2,354 @@ package gestiondeevaluaciones;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SistemaGestionEvaluaciones extends JFrame {
-    private BancoDePreguntas bancoPreguntas;
     private List<Evaluacion> evaluaciones;
+    private BancoDePreguntas bancoPreguntas;
 
     public SistemaGestionEvaluaciones() {
-        bancoPreguntas = new BancoDePreguntas();
         evaluaciones = new ArrayList<>();
+        bancoPreguntas = new BancoDePreguntas();
+        inicializarInterfazGrafica();
+    }
 
-        // Configurar la ventana principal
+    private void inicializarInterfazGrafica() {
         setTitle("Sistema de Gestión de Evaluaciones");
-        setSize(800, 600);
+        setSize(700, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setLayout(new BorderLayout());
 
-        // Panel superior con el título
+        // Establecer un esquema de color sobrio
+        Color fondoColor = new Color(240, 240, 240); // Color de fondo gris claro
+        Color botonColor = new Color(70, 130, 180);  // Color de los botones azul acero
+        Color textoBotonColor = Color.WHITE;
+
+        // Panel principal con margen y fondo
+        JPanel panelPrincipal = new JPanel(new BorderLayout());
+        panelPrincipal.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        panelPrincipal.setBackground(fondoColor);
+
+        // Etiqueta de título
         JLabel tituloLabel = new JLabel("Sistema de Gestión de Evaluaciones", JLabel.CENTER);
         tituloLabel.setFont(new Font("Arial", Font.BOLD, 24));
-        tituloLabel.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));
-        add(tituloLabel, BorderLayout.NORTH);
+        tituloLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 20, 0));
+        panelPrincipal.add(tituloLabel, BorderLayout.NORTH);
 
-        // Crear el panel principal con un GridBagLayout para organizar los botones
+        // Panel central para los botones con GridBagLayout
         JPanel panelCentral = new JPanel(new GridBagLayout());
+        panelCentral.setBackground(fondoColor);
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.fill = GridBagConstraints.BOTH;
 
-        // Botones
-        JButton btnAgregarPreguntas = new JButton("Agregar Preguntas al Banco");
-        JButton btnMostrarPreguntas = new JButton("Mostrar Preguntas por Tema");
-        JButton btnAgregarEvaluacion = new JButton("Agregar Evaluación");
-        JButton btnEliminarPregunta = new JButton("Eliminar Pregunta");
-        JButton btnEliminarEvaluacion = new JButton("Eliminar Evaluación");
-        JButton btnModificarPregunta = new JButton("Modificar Pregunta");
-        JButton btnModificarEvaluacion = new JButton("Modificar Evaluación");
-        JButton btnAgregarNota = new JButton("Agregar Nota a Evaluación");
-        JButton btnMostrarPreguntaEspecifica = new JButton("Mostrar Pregunta Específica");
-        JButton btnMostrarEvaluaciones = new JButton("Mostrar Todas las Evaluaciones");
-        JButton btnMostrarEvaluacionEspecifica = new JButton("Mostrar Evaluación Específica");
-        JButton btnMostrarTodasPreguntas = new JButton("Mostrar Todas las Preguntas");
+        // Botones con estilo coherente
+        JButton btnAgregarEvaluacion = crearBoton("Agregar Evaluación", botonColor, textoBotonColor);
+        JButton btnMostrarEvaluaciones = crearBoton("Mostrar Evaluaciones", botonColor, textoBotonColor);
+        JButton btnAgregarPreguntaBanco = crearBoton("Agregar Preguntas al Banco", botonColor, textoBotonColor);
+        JButton btnMostrarPreguntas = crearBoton("Mostrar Preguntas", botonColor, textoBotonColor);
+        JButton btnAgregarPreguntasEvaluacion = crearBoton("Agregar Preguntas a Evaluación", botonColor, textoBotonColor);
+        JButton btnRegistrarNota = crearBoton("Registrar Nota a Evaluación", botonColor, textoBotonColor);
+        JButton btnGuardarEvaluaciones = crearBoton("Guardar Evaluaciones en CSV", botonColor, textoBotonColor);
+        JButton btnCargarEvaluaciones = crearBoton("Cargar Evaluaciones desde CSV", botonColor, textoBotonColor);
+        JButton btnGuardarPreguntas = crearBoton("Guardar Preguntas en CSV", botonColor, textoBotonColor);
+        JButton btnCargarPreguntas = crearBoton("Cargar Preguntas desde CSV", botonColor, textoBotonColor);
+        JButton btnSalir = crearBoton("Salir", new Color(220, 53, 69), textoBotonColor);
 
-        // Añadir los botones con coordenadas en el GridBagLayout
+        // Añadir botones al panel central en orden coherente
         gbc.gridx = 0; gbc.gridy = 0;
-        panelCentral.add(btnAgregarPreguntas, gbc);
-
-        gbc.gridx = 1; gbc.gridy = 0;
-        panelCentral.add(btnMostrarPreguntas, gbc);
-
-        gbc.gridx = 0; gbc.gridy = 1;
         panelCentral.add(btnAgregarEvaluacion, gbc);
 
-        gbc.gridx = 1; gbc.gridy = 1;
-        panelCentral.add(btnEliminarPregunta, gbc);
-
-        gbc.gridx = 0; gbc.gridy = 2;
-        panelCentral.add(btnEliminarEvaluacion, gbc);
-
-        gbc.gridx = 1; gbc.gridy = 2;
-        panelCentral.add(btnModificarPregunta, gbc);
-
-        gbc.gridx = 0; gbc.gridy = 3;
-        panelCentral.add(btnModificarEvaluacion, gbc);
-
-        gbc.gridx = 1; gbc.gridy = 3;
-        panelCentral.add(btnAgregarNota, gbc);
-
-        gbc.gridx = 0; gbc.gridy = 4;
-        panelCentral.add(btnMostrarPreguntaEspecifica, gbc);
-
-        gbc.gridx = 1; gbc.gridy = 4;
+        gbc.gridx = 1; gbc.gridy = 0;
         panelCentral.add(btnMostrarEvaluaciones, gbc);
 
-        gbc.gridx = 0; gbc.gridy = 5;
-        panelCentral.add(btnMostrarEvaluacionEspecifica, gbc);
+        gbc.gridx = 0; gbc.gridy = 1;
+        panelCentral.add(btnAgregarPreguntaBanco, gbc);
 
-        gbc.gridx = 1; gbc.gridy = 5;
-        panelCentral.add(btnMostrarTodasPreguntas, gbc);
+        gbc.gridx = 1; gbc.gridy = 1;
+        panelCentral.add(btnMostrarPreguntas, gbc);
 
-        add(panelCentral, BorderLayout.CENTER);
+        gbc.gridx = 0; gbc.gridy = 2;
+        panelCentral.add(btnAgregarPreguntasEvaluacion, gbc);
 
-        // Panel inferior con botones de acción
-        JPanel panelInferior = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        JButton btnSalir = new JButton("Salir");
-        panelInferior.add(btnSalir);
-        add(panelInferior, BorderLayout.SOUTH);
+        gbc.gridx = 1; gbc.gridy = 2;
+        panelCentral.add(btnRegistrarNota, gbc);
 
-        // Configurar las acciones de los botones
-        btnAgregarPreguntas.addActionListener(e -> bancoPreguntas.agregarPreguntas());
+        gbc.gridx = 0; gbc.gridy = 3;
+        panelCentral.add(btnGuardarEvaluaciones, gbc);
 
-        btnMostrarPreguntas.addActionListener(e -> {
-            String tema = JOptionPane.showInputDialog("Ingrese el tema:");
-            bancoPreguntas.mostrarPreguntasPorTema(tema);
-        });
+        gbc.gridx = 1; gbc.gridy = 3;
+        panelCentral.add(btnCargarEvaluaciones, gbc);
 
-        btnAgregarEvaluacion.addActionListener(e -> {
-            String nombreEvaluacion = JOptionPane.showInputDialog("Ingrese el nombre de la evaluación:");
-            Evaluacion evaluacion = new Evaluacion(nombreEvaluacion);
-            evaluaciones.add(evaluacion);
-            JOptionPane.showMessageDialog(null, "Evaluación agregada: " + nombreEvaluacion);
-        });
+        gbc.gridx = 0; gbc.gridy = 4;
+        panelCentral.add(btnGuardarPreguntas, gbc);
 
-        btnEliminarPregunta.addActionListener(e -> {
-            String enunciado = JOptionPane.showInputDialog("Ingrese el enunciado de la pregunta a eliminar:");
-            bancoPreguntas.eliminarPregunta(enunciado);
-            JOptionPane.showMessageDialog(null, "Pregunta eliminada: " + enunciado);
-        });
+        gbc.gridx = 1; gbc.gridy = 4;
+        panelCentral.add(btnCargarPreguntas, gbc);
 
-        btnEliminarEvaluacion.addActionListener(e -> {
-            String nombre = JOptionPane.showInputDialog("Ingrese el nombre de la evaluación a eliminar:");
-            evaluaciones.removeIf(evaluacion -> evaluacion.getNombre().equalsIgnoreCase(nombre));
-            JOptionPane.showMessageDialog(null, "Evaluación eliminada: " + nombre);
-        });
+        gbc.gridx = 0; gbc.gridy = 5; gbc.gridwidth = 2;
+        panelCentral.add(btnSalir, gbc);
 
-        btnModificarPregunta.addActionListener(e -> {
-            String enunciadoOriginal = JOptionPane.showInputDialog("Ingrese el enunciado de la pregunta a modificar:");
-            String nuevoEnunciado = JOptionPane.showInputDialog("Ingrese el nuevo enunciado:");
-            String nuevoTema = JOptionPane.showInputDialog("Ingrese el nuevo tema:");
-            bancoPreguntas.modificarPregunta(enunciadoOriginal, nuevoEnunciado, nuevoTema);
-        });
+        panelPrincipal.add(panelCentral, BorderLayout.CENTER);
+        add(panelPrincipal);
 
-        btnModificarEvaluacion.addActionListener(e -> {
-            String nombreOriginal = JOptionPane.showInputDialog("Ingrese el nombre de la evaluación a modificar:");
-            String nuevoNombre = JOptionPane.showInputDialog("Ingrese el nuevo nombre de la evaluación:");
-            for (Evaluacion evaluacion : evaluaciones) {
-                if (evaluacion.getNombre().equalsIgnoreCase(nombreOriginal)) {
-                    evaluacion.modificarEvaluacion(nuevoNombre);
-                    JOptionPane.showMessageDialog(null, "Evaluación modificada.");
-                    return;
-                }
-            }
-            JOptionPane.showMessageDialog(null, "Evaluación no encontrada.");
-        });
-
-        btnAgregarNota.addActionListener(e -> {
-            String nombreEvaluacion = JOptionPane.showInputDialog("Ingrese el nombre de la evaluación:");
-            String notaStr = JOptionPane.showInputDialog("Ingrese la nota:");
-            try {
-                double nota = Double.parseDouble(notaStr);
-                for (Evaluacion evaluacion : evaluaciones) {
-                    if (evaluacion.getNombre().equalsIgnoreCase(nombreEvaluacion)) {
-                        evaluacion.agregarNota(nota);
-                        JOptionPane.showMessageDialog(null, "Nota agregada a la evaluación " + nombreEvaluacion);
-                        return;
-                    }
-                }
-                throw new EvaluacionNoEncontradaException("Evaluación no encontrada: " + nombreEvaluacion);
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(null, "La nota ingresada no es válida.");
-            } catch (NotaInvalidaException ex) {
-                JOptionPane.showMessageDialog(null, ex.getMessage());
-            } catch (EvaluacionNoEncontradaException ex) {
-                JOptionPane.showMessageDialog(null, ex.getMessage());
-            }
-        });
-
-        // Mostrar todas las evaluaciones
-        btnMostrarEvaluaciones.addActionListener(e -> {
-            if (evaluaciones.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "No hay evaluaciones registradas.");
-            } else {
-                StringBuilder sb = new StringBuilder();
-                for (Evaluacion evaluacion : evaluaciones) {
-                    sb.append(evaluacion.toString()).append("\n");
-                }
-                JOptionPane.showMessageDialog(null, sb.toString(), "Todas las Evaluaciones", JOptionPane.INFORMATION_MESSAGE);
-            }
-        });
-
-        // Mostrar evaluación específica
-        btnMostrarEvaluacionEspecifica.addActionListener(e -> {
-            String nombre = JOptionPane.showInputDialog("Ingrese el nombre de la evaluación:");
-            for (Evaluacion evaluacion : evaluaciones) {
-                if (evaluacion.getNombre().equalsIgnoreCase(nombre)) {
-                    JOptionPane.showMessageDialog(null, evaluacion.toString(), "Evaluación", JOptionPane.INFORMATION_MESSAGE);
-                    return;
-                }
-            }
-            JOptionPane.showMessageDialog(null, "Evaluación no encontrada.");
-        });
-
-        // Mostrar todas las preguntas
-        btnMostrarTodasPreguntas.addActionListener(e -> {
-            List<Pregunta> preguntas = bancoPreguntas.getPreguntas();
-            if (preguntas.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "No hay preguntas en el banco.");
-            } else {
-                StringBuilder sb = new StringBuilder();
-                for (Pregunta pregunta : preguntas) {
-                    sb.append(pregunta.toString()).append("\n");
-                }
-                JOptionPane.showMessageDialog(null, sb.toString(), "Todas las Preguntas", JOptionPane.INFORMATION_MESSAGE);
-            }
-        });
-
-        btnMostrarPreguntaEspecifica.addActionListener(e -> {
-            String enunciado = JOptionPane.showInputDialog("Ingrese el enunciado de la pregunta a mostrar:");
-            try {
-                bancoPreguntas.mostrarPreguntaEspecifica(enunciado);
-            } catch (PreguntaNoEncontradaException ex) {
-                JOptionPane.showMessageDialog(null, ex.getMessage());
-            }
-        });
-
+        // Asignar acciones a los botones (sin cambios en la funcionalidad)
+        btnAgregarEvaluacion.addActionListener(e -> agregarEvaluacion());
+        btnMostrarEvaluaciones.addActionListener(e -> mostrarEvaluaciones());
+        btnAgregarPreguntaBanco.addActionListener(e -> agregarPreguntasAlBanco());
+        btnMostrarPreguntas.addActionListener(e -> mostrarPreguntas());
+        btnAgregarPreguntasEvaluacion.addActionListener(e -> agregarPreguntasAEvaluacion());
+        btnRegistrarNota.addActionListener(e -> registrarNotaAEvaluacion());
+        btnGuardarEvaluaciones.addActionListener(e -> guardarEvaluacionesEnCSV());
+        btnCargarEvaluaciones.addActionListener(e -> cargarEvaluacionesDesdeCSV());
+        btnGuardarPreguntas.addActionListener(e -> guardarPreguntasEnCSV());
+        btnCargarPreguntas.addActionListener(e -> cargarPreguntasDesdeCSV());
         btnSalir.addActionListener(e -> System.exit(0));
 
         setVisible(true);
+    }
+
+    // Método auxiliar para crear botones con estilo
+    private JButton crearBoton(String texto, Color fondo, Color textoColor) {
+        JButton boton = new JButton(texto);
+        boton.setBackground(fondo);
+        boton.setForeground(textoColor);
+        boton.setFocusPainted(false);
+        boton.setFont(new Font("Arial", Font.PLAIN, 14));
+        return boton;
+    }
+
+
+    private void agregarEvaluacion() {
+        String nombre = JOptionPane.showInputDialog("Ingrese el nombre de la evaluación:");
+        if (nombre != null && !nombre.trim().isEmpty()) {
+            evaluaciones.add(new Evaluacion(nombre));
+            JOptionPane.showMessageDialog(null, "Evaluación '" + nombre + "' agregada.");
+        } else {
+            JOptionPane.showMessageDialog(null, "Nombre de evaluación inválido.");
+        }
+    }
+
+    private void mostrarEvaluaciones() {
+        if (evaluaciones.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No hay evaluaciones registradas.");
+            return;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (Evaluacion evaluacion : evaluaciones) {
+            sb.append(evaluacion.toString()).append("\n");
+        }
+        JTextArea textArea = new JTextArea(sb.toString());
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
+        scrollPane.setPreferredSize(new java.awt.Dimension(500, 300));
+        JOptionPane.showMessageDialog(null, scrollPane, "Evaluaciones", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    private void agregarPreguntasAlBanco() {
+        String tema = JOptionPane.showInputDialog("Ingrese el tema:");
+        if (tema == null || tema.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Tema inválido.");
+            return;
+        }
+        String cantidadStr = JOptionPane.showInputDialog("Ingrese la cantidad de preguntas a agregar:");
+        try {
+            int cantidad = Integer.parseInt(cantidadStr);
+            for (int i = 0; i < cantidad; i++) {
+                String enunciado = JOptionPane.showInputDialog("Ingrese el enunciado de la pregunta " + (i + 1) + ":");
+                if (enunciado != null && !enunciado.trim().isEmpty()) {
+                    bancoPreguntas.agregarPregunta(new Pregunta(enunciado, tema));
+                } else {
+                    JOptionPane.showMessageDialog(null, "Enunciado inválido.");
+                    i--;
+                }
+            }
+            JOptionPane.showMessageDialog(null, "Preguntas agregadas al banco.");
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Cantidad inválida.");
+        }
+    }
+
+    private void mostrarPreguntas() {
+        List<Pregunta> todasPreguntas = bancoPreguntas.getTodasLasPreguntas();
+        if (todasPreguntas.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No hay preguntas en el banco.");
+            return;
+        }
+        StringBuilder sb = new StringBuilder();
+        for (Pregunta pregunta : todasPreguntas) {
+            sb.append(pregunta.toString()).append("\n");
+        }
+        JTextArea textArea = new JTextArea(sb.toString());
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
+        scrollPane.setPreferredSize(new java.awt.Dimension(500, 300));
+        JOptionPane.showMessageDialog(null, scrollPane, "Preguntas", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    private void agregarPreguntasAEvaluacion() {
+        String nombreEvaluacion = JOptionPane.showInputDialog("Ingrese el nombre de la evaluación:");
+        Evaluacion evaluacion = buscarEvaluacion(nombreEvaluacion);
+
+        if (evaluacion == null) {
+            JOptionPane.showMessageDialog(null, "Evaluación no encontrada.");
+            return;
+        }
+
+        String tema = JOptionPane.showInputDialog("Ingrese el tema de las preguntas:");
+        List<Pregunta> preguntasDelTema;
+        try {
+            preguntasDelTema = bancoPreguntas.obtenerPreguntasPorTema(tema);
+        } catch (PreguntaNoEncontradaException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+            return;
+        }
+
+        String cantidadStr = JOptionPane.showInputDialog("Ingrese la cantidad de preguntas a agregar (máximo: " + preguntasDelTema.size() + "):");
+        try {
+            int cantidad = Integer.parseInt(cantidadStr);
+
+            if (cantidad > preguntasDelTema.size() || cantidad <= 0) {
+                JOptionPane.showMessageDialog(null, "Cantidad inválida.");
+                return;
+            }
+
+            List<Pregunta> preguntasSeleccionadas = preguntasDelTema.subList(0, cantidad);
+            evaluacion.agregarPreguntas(preguntasSeleccionadas);
+            JOptionPane.showMessageDialog(null, "Preguntas agregadas a la evaluación.");
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Cantidad inválida.");
+        }
+    }
+
+    private void registrarNotaAEvaluacion() {
+        String nombreEvaluacion = JOptionPane.showInputDialog("Ingrese el nombre de la evaluación:");
+        Evaluacion evaluacion = buscarEvaluacion(nombreEvaluacion);
+
+        if (evaluacion == null) {
+            JOptionPane.showMessageDialog(null, "Evaluación no encontrada.");
+            return;
+        }
+
+        String notaStr = JOptionPane.showInputDialog("Ingrese la nota (1.0 - 7.0):");
+        try {
+            double nota = Double.parseDouble(notaStr);
+            evaluacion.registrarNota(nota);
+            JOptionPane.showMessageDialog(null, "Nota registrada exitosamente.");
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Formato de nota inválido.");
+        } catch (NotaInvalidaException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }
+
+    private Evaluacion buscarEvaluacion(String nombre) {
+        for (Evaluacion e : evaluaciones) {
+            if (e.getNombre().equalsIgnoreCase(nombre)) {
+                return e;
+            }
+        }
+        return null;
+    }
+
+    // Métodos para guardar y cargar evaluaciones y preguntas en CSV
+
+    private void guardarEvaluacionesEnCSV() {
+        try (PrintWriter writer = new PrintWriter(new FileWriter("evaluaciones.csv"))) {
+            for (Evaluacion evaluacion : evaluaciones) {
+                writer.print(evaluacion.getNombre());
+                for (Pregunta pregunta : evaluacion.getPreguntas()) {
+                    writer.print("," + pregunta.getEnunciado() + ":" + pregunta.getTema());
+                }
+                // Guardar notas
+                if (!evaluacion.getNotas().isEmpty()) {
+                    writer.print(",Notas:");
+                    for (Double nota : evaluacion.getNotas()) {
+                        writer.print(nota + ";");
+                    }
+                }
+                writer.println();
+            }
+            JOptionPane.showMessageDialog(null, "Evaluaciones guardadas exitosamente en evaluaciones.csv.");
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error al guardar evaluaciones: " + e.getMessage());
+        }
+    }
+
+    private void cargarEvaluacionesDesdeCSV() {
+        try (BufferedReader reader = new BufferedReader(new FileReader("evaluaciones.csv"))) {
+            String linea;
+            evaluaciones.clear();
+            while ((linea = reader.readLine()) != null) {
+                String[] partes = linea.split(",");
+                Evaluacion evaluacion = new Evaluacion(partes[0]);
+                for (int i = 1; i < partes.length; i++) {
+                    if (partes[i].startsWith("Notas:")) {
+                        String notasStr = partes[i].substring(6); // Omitir "Notas:"
+                        String[] notasArray = notasStr.split(";");
+                        for (String notaStr : notasArray) {
+                            if (!notaStr.isEmpty()) {
+                                try {
+                                    double nota = Double.parseDouble(notaStr);
+                                    evaluacion.registrarNota(nota);
+                                } catch (NumberFormatException | NotaInvalidaException e) {
+                                    // Ignorar notas inválidas
+                                }
+                            }
+                        }
+                    } else {
+                        String[] preguntaParte = partes[i].split(":");
+                        if (preguntaParte.length == 2) {
+                            Pregunta pregunta = new Pregunta(preguntaParte[0], preguntaParte[1]);
+                            evaluacion.agregarPreguntas(List.of(pregunta));
+                        }
+                    }
+                }
+                evaluaciones.add(evaluacion);
+            }
+            JOptionPane.showMessageDialog(null, "Evaluaciones cargadas exitosamente desde evaluaciones.csv.");
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error al cargar evaluaciones: " + e.getMessage());
+        }
+    }
+
+    private void guardarPreguntasEnCSV() {
+        try (PrintWriter writer = new PrintWriter(new FileWriter("preguntas.csv"))) {
+            for (Pregunta pregunta : bancoPreguntas.getTodasLasPreguntas()) {
+                writer.println(pregunta.getEnunciado() + "," + pregunta.getTema());
+            }
+            JOptionPane.showMessageDialog(null, "Preguntas guardadas exitosamente en preguntas.csv.");
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error al guardar preguntas: " + e.getMessage());
+        }
+    }
+
+    private void cargarPreguntasDesdeCSV() {
+        try (BufferedReader reader = new BufferedReader(new FileReader("preguntas.csv"))) {
+            String linea;
+            bancoPreguntas = new BancoDePreguntas();
+            while ((linea = reader.readLine()) != null) {
+                String[] partes = linea.split(",");
+                if (partes.length == 2) {
+                    Pregunta pregunta = new Pregunta(partes[0], partes[1]);
+                    bancoPreguntas.agregarPregunta(pregunta);
+                }
+            }
+            JOptionPane.showMessageDialog(null, "Preguntas cargadas exitosamente desde preguntas.csv.");
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error al cargar preguntas: " + e.getMessage());
+        }
     }
 
     public static void main(String[] args) {
         new SistemaGestionEvaluaciones();
     }
 }
+
+
+

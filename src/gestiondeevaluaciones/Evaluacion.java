@@ -18,43 +18,36 @@ public class Evaluacion {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
     public List<Pregunta> getPreguntas() {
         return preguntas;
     }
 
-    public void setPreguntas(List<Pregunta> preguntas) {
-        this.preguntas = preguntas;
+    public void agregarPreguntas(List<Pregunta> nuevasPreguntas) {
+        this.preguntas.addAll(nuevasPreguntas);
+    }
+
+    public void registrarNota(double nota) throws NotaInvalidaException {
+        if (nota < 1.0 || nota > 7.0) {
+            throw new NotaInvalidaException("La nota debe estar entre 1.0 y 7.0");
+        }
+        this.notas.add(nota);
     }
 
     public List<Double> getNotas() {
         return notas;
     }
 
-    public void setNotas(List<Double> notas) {
-        this.notas = notas;
-    }
-
-    public void agregarNota(double nota) throws NotaInvalidaException {
-        if (nota < 1.0 || nota > 7.0) {
-            throw new NotaInvalidaException("Nota inválida: " + nota + ". Debe estar entre 1.0 y 7.0.");
-        }
-        notas.add(nota);
-    }
-
-    public void eliminarPregunta(String enunciado) {
-        preguntas.removeIf(pregunta -> pregunta.getEnunciado().equalsIgnoreCase(enunciado));
-    }
-
-    public void modificarEvaluacion(String nuevoNombre) {
-        this.nombre = nuevoNombre;
-    }
-
     @Override
     public String toString() {
-        return "Evaluación: " + nombre + ", Preguntas = " + preguntas + ", Notas = " + notas;
+        StringBuilder sb = new StringBuilder();
+        sb.append("Evaluación: ").append(nombre).append("\nPreguntas:\n");
+        for (Pregunta pregunta : preguntas) {
+            sb.append("- ").append(pregunta.getEnunciado()).append("\n");
+        }
+        sb.append("Notas:\n");
+        for (Double nota : notas) {
+            sb.append("- ").append(nota).append("\n");
+        }
+        return sb.toString();
     }
 }
