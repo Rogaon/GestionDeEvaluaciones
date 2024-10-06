@@ -7,13 +7,20 @@ import java.awt.*;
  * Clase principal que maneja la interfaz gráfica de la aplicación.
  */
 public class SistemaGestionEvaluaciones extends JFrame {
+    /**
+    * Controlador que maneja la lógica de negocio del sistema.
+    */
     private Controlador controlador;
-
+    /**
+     * Constructor que inicializa la interfaz gráfica del sistema.
+     */
     public SistemaGestionEvaluaciones() {
         controlador = new Controlador();
         inicializarInterfazGrafica();
     }
-
+    /**
+     * Inicializa y configura la interfaz gráfica del sistema, incluyendo botones y acciones.
+     */
     private void inicializarInterfazGrafica() {
         setTitle("Sistema de Gestión de Evaluaciones");
         setSize(700, 800);
@@ -62,8 +69,14 @@ public class SistemaGestionEvaluaciones extends JFrame {
         JButton btnAgregarPreguntasEvaluacion = crearBoton("Agregar Preguntas a Evaluación", botonColor, textoBotonColor);
         JButton btnMostrarEvaluacionesPorNota = crearBoton("Mostrar Evaluaciones por Nota", botonColor, textoBotonColor);
         JButton btnMostrarPreguntasPorTema = crearBoton("Mostrar Preguntas por Tema", botonColor, textoBotonColor);
+        JButton btnBuscarEnSistema = crearBoton("Buscar en el Sistema", botonColor, textoBotonColor);
         JButton btnGenerarReporte = crearBoton("Generar Reporte", botonColor, textoBotonColor);
         JButton btnSalir = crearBoton("Salir", new Color(220, 53, 69), textoBotonColor);
+        JButton btnExportarExcel = crearBoton("Exportar Evaluaciones a Excel", botonColor, textoBotonColor);
+        JButton btnMostrarGrafico = crearBoton("Mostrar Gráfico", botonColor, textoBotonColor);
+        JButton btnMostrarTemas = crearBoton("Mostrar Temas", botonColor, textoBotonColor);
+    
+
 
         // Añadir botones al panel central
         gbc.gridx = 0; gbc.gridy = 0;
@@ -98,13 +111,25 @@ public class SistemaGestionEvaluaciones extends JFrame {
 
         gbc.gridx = 0; gbc.gridy = 5;
         panelCentral.add(btnMostrarPreguntasPorTema, gbc);
-
+        
         gbc.gridx = 1; gbc.gridy = 5;
+        panelCentral.add(btnBuscarEnSistema, gbc);
+
+        gbc.gridx = 0; gbc.gridy = 6;
         panelCentral.add(btnGenerarReporte, gbc);
-
-        gbc.gridx = 0; gbc.gridy = 6; gbc.gridwidth = 2;
+        
+        gbc.gridx = 1; gbc.gridy = 6;
+        panelCentral.add(btnExportarExcel, gbc);
+        
+        gbc.gridx = 0; gbc.gridy = 7;
+        panelCentral.add(btnMostrarGrafico, gbc);
+        
+        gbc.gridx = 1; gbc.gridy = 7;
+        panelCentral.add(btnMostrarTemas, gbc);
+        
+        gbc.gridx = 0; gbc.gridy = 8; gbc.gridwidth = 2;
         panelCentral.add(btnSalir, gbc);
-
+        
         panelPrincipal.add(panelCentral, BorderLayout.CENTER);
         add(panelPrincipal);
 
@@ -120,13 +145,25 @@ public class SistemaGestionEvaluaciones extends JFrame {
         btnAgregarPreguntasEvaluacion.addActionListener(e -> controlador.agregarPreguntasAEvaluacion());
         btnMostrarEvaluacionesPorNota.addActionListener(e -> controlador.mostrarEvaluacionesPorNota());
         btnMostrarPreguntasPorTema.addActionListener(e -> controlador.mostrarPreguntasPorTema());
+        btnBuscarEnSistema.addActionListener(e -> controlador.buscarElementoEnSistema());
         btnGenerarReporte.addActionListener(e -> controlador.generarReporte());
         btnSalir.addActionListener(e -> System.exit(0));
+        btnExportarExcel.addActionListener(e -> controlador.exportarEvaluacionesAExcel("evaluaciones.xlsx"));
+        btnMostrarGrafico.addActionListener(e -> controlador.mostrarGraficoDeBarras());
+        btnMostrarTemas.addActionListener(e -> controlador.mostrarTemas());
+
 
         setVisible(true);
     }
 
-    // Método para crear botones con estilo
+    /**
+     * Método para crear botones personalizados con estilo.
+     *
+     * @param texto El texto del botón.
+     * @param fondo El color de fondo del botón.
+     * @param textoColor El color del texto del botón.
+     * @return El botón personalizado creado.
+     */
     private JButton crearBoton(String texto, Color fondo, Color textoColor) {
         JButton boton = new JButton(texto);
         boton.setBackground(fondo);
@@ -135,7 +172,11 @@ public class SistemaGestionEvaluaciones extends JFrame {
         boton.setFont(new Font("Arial", Font.PLAIN, 14));
         return boton;
     }
-
+    /**
+    * Método principal para iniciar la aplicación.
+    *
+    * @param args Argumentos de línea de comandos.
+    */
     public static void main(String[] args) {
         new SistemaGestionEvaluaciones();
     }

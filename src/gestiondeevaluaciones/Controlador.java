@@ -4,14 +4,24 @@ import javax.swing.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Row;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.category.DefaultCategoryDataset;
 
 /**
  * Clase que actúa como controlador del sistema, manejando la lógica de negocio.
  */
-public class Controlador {
+public final class Controlador {
     private List<Evaluacion> evaluaciones;
     private BancoDePreguntas bancoPreguntas;
-
+    
     /**
      * Constructor que inicializa las colecciones y carga los datos.
      */
@@ -48,13 +58,56 @@ public class Controlador {
             guardarPreguntasEnCSV();
         }));
     }
-
+    
     /**
-     * Método para agregar una nueva evaluación al sistema.
+     * Exporta las evaluaciones a un archivo Excel.
+     * 
+     * @param nombreArchivo El nombre del archivo Excel a crear.
      */
+    public void exportarEvaluacionesAExcel(String nombreArchivo) {
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Evaluaciones");
+
+        // Encabezado
+        Row headerRow = sheet.createRow(0);
+        headerRow.createCell(0).setCellValue("Nombre Evaluación");
+        headerRow.createCell(1).setCellValue("Número de Preguntas");
+
+        // Poblamos las filas con los datos de las evaluaciones
+        int rowNum = 1;
+        for (Evaluacion evaluacion : evaluaciones) { // Asume que tienes una lista de evaluaciones
+            Row row = sheet.createRow(rowNum++);
+            row.createCell(0).setCellValue(evaluacion.getNombre());
+            row.createCell(1).setCellValue(evaluacion.getPreguntas().size());
+        }
+
+        // Escribir el archivo
+        try (FileOutputStream fileOut = new FileOutputStream(nombreArchivo)) {
+            workbook.write(fileOut);
+            System.out.println("Archivo Excel creado: " + nombreArchivo);
+        } catch (IOException e) {
+        }
+
+        // Cerrar el workbook
+        try {
+            workbook.close();
+        } catch (IOException e) {
+        }
+    }
+    /**
+    * Método para agregar una nueva evaluación al sistema.
+    */
     public void agregarEvaluacion() {
         String nombre = JOptionPane.showInputDialog("Ingrese el nombre de la evaluación:");
         if (nombre != null && !nombre.trim().isEmpty()) {
+            // Verificar si la evaluación ya existe
+            for (Evaluacion evaluacion : evaluaciones) {
+                if (evaluacion.getNombre().equalsIgnoreCase(nombre)) {
+                    JOptionPane.showMessageDialog(null, "La evaluación '" + nombre + "' ya existe.");
+                    return; // Salir del método si ya existe
+                }
+            }
+            // Si no existe, agregar la evaluación
             evaluaciones.add(new Evaluacion(nombre));
             JOptionPane.showMessageDialog(null, "Evaluación '" + nombre + "' agregada.");
         } else {
@@ -320,7 +373,7 @@ public class Controlador {
     }
 
     /**
-     * Método para generar un reporte en archivo TXT.
+     * Método para generar un reporte en archivo TXT con las evaluaciones y preguntas.
      */
     public void generarReporte() {
         try (PrintWriter writer = new PrintWriter(new FileWriter("reporte.txt"))) {
@@ -447,6 +500,113 @@ public class Controlador {
         }
         return null;
     }
+    /**
+     * Método público para buscar en ambos niveles(Evaluaciones y Preguntas).
+     */
+    public void buscarElementoEnSistema() {
+        String criterio = JOptionPane.showInputDialog("Ingrese el criterio de búsqueda:");
+        Object resultado = buscarEnSistema(criterio); // Llama al método de búsqueda principal
+
+        if (resultado instanceof Evaluacion) {
+            Evaluacion evaluacion = (Evaluacion) resultado;
+            JOptionPane.showMessageDialog(null, "Evaluación encontrada: " + evaluacion.getNombre());
+        } else if (resultado instanceof Pregunta) {
+            Pregunta pregunta = (Pregunta) resultado;
+            JOptionPane.showMessageDialog(null, "Pregunta encontrada: " + pregunta.getEnunciado());
+        } else {
+            JOptionPane.showMessageDialog(null, "No se encontró ningún elemento con ese criterio.");
+        }
+    }
+    /**
+    * Busca en el sistema una evaluación o una pregunta según el criterio proporcionado.
+    * 
+    * @param criterio El criterio de búsqueda que se utilizará para encontrar una evaluación o pregunta.
+    * @return La evaluación o pregunta encontrada, o null si no se encuentra ninguna coincidencia.
+    */
+    public Object buscarEnSistema(String criterio) {
+    // Buscar primero en las evaluaciones
+    Evaluacion evaluacion = buscarEvaluacion(criterio);
+    if (evaluacion != null) {
+        return evaluacion;
+    }
+    // Buscar en el banco de preguntas
+    try {
+        return bancoPreguntas.buscarPregunta(criterio);
+    } catch (PreguntaNoEncontradaException e) {
+        System.out.println("Pregunta no encontrada: " + e.getMessage());
+    }
+
+    // Retornar null si no se encuentra ni evaluación ni pregunta
+    return null;
+    }
+    /**
+    * Muestra un gráfico de barras que representa el promedio de notas por evaluación.
+    * Este método crea un conjunto de datos basado en las evaluaciones disponibles y 
+    * sus respectivas notas, y luego genera un gráfico utilizando JFreeChart.
+    */
+    public void mostrarGraficoDeBarras() {
+    // Crear un conjunto de datos
+    DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
+    // Obtener las evaluaciones y sus notas
+    for (Evaluacion evaluacion : evaluaciones) {
+        double notaPromedio = calcularPromedioNotas(evaluacion.getNotas());
+        dataset.addValue(notaPromedio, "Notas", evaluacion.getNombre());
+    }
+
+    // Crear el gráfico
+    JFreeChart chart = ChartFactory.createBarChart(
+            "Promedio de Notas por Evaluación", // Título del gráfico
+            "Evaluaciones",                      // Etiqueta del eje X
+            "Promedio de Notas",                 // Etiqueta del eje Y
+            dataset                              // Datos
+    );
+
+    // Crear un panel para el gráfico
+    ChartPanel chartPanel = new ChartPanel(chart);
+    chartPanel.setPreferredSize(new java.awt.Dimension(800, 600));
+
+    // Crear un nuevo JFrame para mostrar el gráfico
+    JFrame frame = new JFrame("Gráfico de Notas");
+    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    frame.getContentPane().add(chartPanel);
+    frame.pack();
+    frame.setVisible(true);
 }
 
+    /**
+    * Método para calcular el promedio de notas de una evaluación.
+    * 
+    * @param notas Lista de notas de la evaluación.
+    * @return El promedio de las notas.
+    */
+    private double calcularPromedioNotas(List<Double> notas) {
+        if (notas == null || notas.isEmpty()) {
+            return 0.0; // Retornar 0 si no hay notas
+        }
+        double suma = 0.0;
+        for (double nota : notas) {
+            suma += nota;
+        }
+        return suma / notas.size(); // Retornar el promedio
+    }
+    
+    /**
+    * Método para mostrar los temas disponibles en el banco de preguntas.
+    */
+    public void mostrarTemas() {
+        List<String> temas = bancoPreguntas.obtenerTemas();
+        if (temas.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No hay temas disponibles.");
+        } else {
+            StringBuilder sb = new StringBuilder("Temas disponibles:\n");
+            for (String tema : temas) {
+                sb.append("- ").append(tema).append("\n");
+            }
+            JOptionPane.showMessageDialog(null, sb.toString());
+        }
+    }
+}
+
+      
 
